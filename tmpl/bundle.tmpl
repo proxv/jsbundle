@@ -1,0 +1,27 @@
+(function() {
+  var _$_moduleFns = {};
+  var _$_modules = {};
+
+  function _$_require(id) {
+    var moduleFn = _$_moduleFns[id];
+    if (moduleFn) {
+      var mod = _$_modules[id];
+      if (!mod) {
+        mod = _$_modules[id] = {
+          id: id,
+          exports: {}
+        };
+        mod.main = _$_modules[@mainModuleId];
+        moduleFn(mod, mod.exports, _$_require, id);
+      }
+      return mod.exports;
+    } else {
+      throw new Error("Cannot find module '" + id + "'");
+    }
+  }
+
+  @moduleDefs
+
+  _$_require(@mainModuleId);
+})();
+

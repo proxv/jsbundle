@@ -1,0 +1,26 @@
+{
+  "author": "ProxV, Inc.",
+  "name": "jsbundle",
+  "description": "Bundle your modules into a single file for the browser.",
+  "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/proxv/jsbundle.git"
+  },
+  "main": "jsbundle.js",
+  "scripts": {
+    "test": "find test -name \"test*.js\" | xargs node_modules/vows/bin/vows"
+  },
+  "dependencies": {
+    "uglify-js": "1.x.x",
+    "underscore": "1.x.x",
+    "optimist": "0.3.x",
+    "connect": "2.x.x"
+  },
+  "devDependencies": {
+    "vows": "0.6.x"
+  },
+  "engines": {
+    "node": "0.6.x"
+  }
+}

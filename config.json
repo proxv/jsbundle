@@ -1,0 +1,15 @@
+{
+  "outputFilters": [
+    "./ext/logger-filter"
+  ],
+  "extraRequires": {
+    "_": "underscore",
+    "Logger": "./ext/logger"
+  },
+  "beforeModuleBody": [
+    "var logger = new Logger(__filename);"
+  ],
+  "afterModuleBody": [],
+  "mangleNames": true,
+  "logLevel": "off"
+}
