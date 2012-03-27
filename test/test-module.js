@@ -29,9 +29,8 @@ vows.describe('test Module').addBatch({
       assert.match(src, /def.js"\s*\)/);
     },
 
-    "setId / compile": function(mod) {
-      mod.setId(123);
-      assert.match(mod.compile(), /moduleFns\[123\]/);
+    "compileWithId": function(mod) {
+      assert.match(mod.compileWithId(123), /moduleFns\[123\]/);
     }
   }
 }).export(module);
