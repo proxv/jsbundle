@@ -6,7 +6,7 @@ It finds all *require* calls in your code and includes the necessary module file
 
 It handles *node\_modules* directories and *package.json* files just like Node does.
 
-It comes with a "Dev CDN" that will serve the latest *jsbundled* version of your code via local HTTP.
+It comes with a "Dev CDN" that will watch your files for changes and serve the latest *jsbundled* version of your code via local HTTP.
 
 ## Usage
 

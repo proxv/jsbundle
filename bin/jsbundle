@@ -7,5 +7,5 @@ if (argv._.length > 1) {
   throw new Error('only one entry file can be specified at a time');
 }
 
-require('util').puts(jsbundle.bundle(argv._[0], argv.config));
+require('util').puts(jsbundle.bundle(argv._[0], argv.config).src);
 

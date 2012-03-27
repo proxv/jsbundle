@@ -5,7 +5,7 @@ var bundle = require('../lib/bundle');
 
 vows.describe('module resolution').addBatch({
   "basic": {
-    topic: bundle(__dirname + '/fixtures/abc.js', __dirname + '/fixtures/config.json'),
+    topic: bundle(__dirname + '/fixtures/abc.js', __dirname + '/fixtures/config.json').src,
 
     "find all modules": function(bundled) {
       assert.match(bundled, /moduleFns\["[^"]+abc.js"\]/);
