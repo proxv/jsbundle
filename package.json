@@ -11,6 +11,10 @@
   "scripts": {
     "test": "find test -name \"test*.js\" | xargs node_modules/vows/bin/vows"
   },
+  "bin": {
+    "devcdn": "./bin/devcdn",
+    "jsbundle": "./bin/jsbundle"
+  },
   "dependencies": {
     "uglify-js": "1.x.x",
     "underscore": "1.x.x",
