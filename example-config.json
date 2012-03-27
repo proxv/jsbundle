@@ -1,7 +1,9 @@
 {
-  "outputFilters": [
-    "./ext/logger-filter"
-  ],
+  "mangleNames": true,
+
+  "beforeBundle": [],
+  "afterBundle": [],
+
   "extraRequires": {
     "_": "underscore",
     "Logger": "./ext/logger"
@@ -10,6 +12,10 @@
     "var logger = new Logger(__filename);"
   ],
   "afterModuleBody": [],
-  "mangleNames": true,
-  "logLevel": "off"
+
+  "outputFilters": [
+    "./ext/logger-filter"
+  ],
+
+  "loggerFilterLevel": "warn"
 }

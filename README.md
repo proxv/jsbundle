@@ -50,9 +50,11 @@ Test coverage is currently mediocre. You can run tests with:
 ### Example
 
     {
-      "outputFilters": [
-        "./ext/logger-filter"
-      ],
+      "mangleNames": true,
+
+      "beforeBundle": [],
+      "afterBundle": [],
+
       "extraRequires": {
         "_": "underscore",
         "Logger": "./ext/logger"
@@ -61,8 +63,12 @@ Test coverage is currently mediocre. You can run tests with:
         "var logger = new Logger(__filename);"
       ],
       "afterModuleBody": [],
-      "mangleNames": true,
-      "logLevel": "off"
+
+      "outputFilters": [
+        "./ext/logger-filter"
+      ],
+
+      "loggerFilterLevel": "warn"
     }
 
 All configuration is optional. If you want to configure *jsbundle* operation, create a JSON file with one or more of the following key/value pairs:
@@ -70,14 +76,20 @@ All configuration is optional. If you want to configure *jsbundle* operation, cr
 ### mangleNames
 By default, *jsbundle* uses the absolute path of a file as its module id. This is useful for development, but in production it's wasteful and potentially reveals information you want to keep private. If you enable the **mangleNames** option, module ids will be numeric instead.
 
+### beforeBundle
+An array of arbitrary JavaScript statements to insert *before* the entire bundle.
+
+### afterBundle
+An array of arbitrary JavaScript statements to insert *after* the entire bundle.
+
 ### extraRequires
 You can specify additional requires that *jsbundle* will automatically add to all of your modules. This is useful for e.g. ensuring you always have underscore available without having to pollute the global namespace or remember to manually require it every time. The value for this configuration option must be an object literal, with keys the variable name for the required module and values the path to the module. **Relative paths will be resolved relative to the config file location.**
 
 ### beforeModuleBody
-An array of arbitrary JavaScript statements to insert **before** every module body.
+An array of arbitrary JavaScript statements to insert *before* every module body.
 
 ### afterModuleBody
-An array of arbitrary JavaScript statements to insert **after** every module body.
+An array of arbitrary JavaScript statements to insert *after* every module body.
 
 ### outputFilters
 An array of output filters module files, resolved relative to the config file path.
@@ -93,6 +105,8 @@ Example:
     };
 
 [Here is a more useful example.](https://github.com/proxv/jsbundle/blob/master/ext/logger-filter.js)
+
+**Note**: output filters may require additional configuration options, like the *loggerFilterLevel* above. These values should be written into the same configuration JSON file. If you write your own output filter, it's probably a good idea to avoid collisions by prefixing additional configuration option names with the name of the output filter.
 
 ## Thanks To
 

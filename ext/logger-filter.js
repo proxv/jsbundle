@@ -12,7 +12,7 @@ var LOG_LEVELS = {
 };
 
 function init(options) {
-  var logLevel = options.logLevel;
+  var logLevel = options.loggerFilterLevel;
   if (typeof logLevel !== 'string' || typeof LOG_LEVELS[logLevel] === 'undefined') {
     throw new Error('invalid log level: ' + logLevel);
   }
