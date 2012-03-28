@@ -97,7 +97,7 @@ An array of arbitrary JavaScript statements to insert *before* the entire bundle
 An array of arbitrary JavaScript statements to insert *after* the entire bundle.
 
 ### extraRequires
-You can specify additional requires that *jsbundle* will automatically add to all of your modules. This is useful for e.g. ensuring you always have underscore available without having to pollute the global namespace or remember to manually require it every time. The value for this configuration option must be an object literal, with keys the variable name for the required module and values the path to the module. **Relative paths will be resolved relative to the config file location.**
+You can specify additional requires that *jsbundle* will automatically add to all of your modules. This is useful for e.g. ensuring you always have underscore available without having to pollute the global namespace or remember to manually require it every time. The value for this configuration option must be an object literal, with keys the variable name for the required module and values the path to the module. Relative paths will be resolved relative to the config file location first, then relative to the *jsbundle* repository directory.
 
 ### beforeModuleBody
 An array of arbitrary JavaScript statements to insert *before* every module body.
@@ -106,7 +106,7 @@ An array of arbitrary JavaScript statements to insert *before* every module body
 An array of arbitrary JavaScript statements to insert *after* every module body.
 
 ### outputFilters
-An array of output filters module files, resolved relative to the config file path.
+An array of output filters module files. Relative paths are resolved relative to the config file path first, then relative to the *jsbundle* repository directory.
 
 Output filters allow you to specify additional ways to transform your module code. They are regular Node modules that must export an *init* function. This function takes in the *jsbundle* configuration object as a parameter and returns a second function. The returned function must accept a string containing the source code of a module and return the transformed source code, also as a string.
 
