@@ -8,6 +8,8 @@ It handles *node\_modules* directories and *package.json* files just like Node d
 
 It comes with a "Dev CDN" that will watch your files for changes and serve the latest *jsbundled* version of your code via local HTTP.
 
+It has good error handling and runs without any configuration.
+
 ## Usage
 
 ### jsbundle
