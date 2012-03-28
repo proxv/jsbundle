@@ -1,5 +1,7 @@
 {
-  "extraRequires": {
-    "_": "underscore"
+  "default": {
+    "extraRequires": {
+      "_": "underscore"
+    }
   }
 }

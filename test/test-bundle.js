@@ -2,10 +2,11 @@ var vows = require('vows');
 var assert = require('assert');
 var path = require('path');
 var bundle = require('../lib/bundle');
+var parseConfig = require('../lib/parse-config');
 
 vows.describe('module resolution').addBatch({
   "basic": {
-    topic: bundle(__dirname + '/fixtures/abc.js', __dirname + '/fixtures/config.json').src,
+    topic: bundle(__dirname + '/fixtures/abc.js', parseConfig(__dirname + '/fixtures/config.json')).src,
 
     "find all modules": function(bundled) {
       assert.match(bundled, /moduleFns\["[^"]+abc.js"\]/);

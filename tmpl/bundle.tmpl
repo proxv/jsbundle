@@ -9,7 +9,8 @@
       if (!mod) {
         mod = _$_modules[id] = {
           id: id,
-          exports: {}
+          exports: {},
+          bundleUrl: @bundleUrl
         };
         mod.main = _$_modules[@mainModuleId];
         moduleFn(mod, mod.exports, _$_require, id);

@@ -1,0 +1,29 @@
+{
+  "default": {
+    "beforeBundle": [],
+    "afterBundle": [],
+
+    "extraRequires": {
+      "_": "underscore",
+      "Logger": "./ext/logger"
+    },
+    "beforeModuleBody": [
+      "var logger = new Logger(__filename);"
+    ],
+    "afterModuleBody": [],
+
+    "outputFilters": [
+      "./ext/logger-filter"
+    ]
+  },
+
+  "production": {
+    "mangleNames": true,
+    "loggerFilterLevel": "error"
+  },
+
+  "development": {
+    "mangleNames": false,
+    "loggerFilterLevel": "debug"
+  }
+}

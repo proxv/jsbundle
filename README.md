@@ -12,9 +12,10 @@ It comes with a "Dev CDN" that will watch your files for changes and serve the l
 
 ### jsbundle
 
-    jsbundle <entry_file> [config_file]
+    [JSBUNDLE_ENV=<env>] jsbundle <entry_file> [config_file]
 
 Bundle up *entry\_file* and all its dependencies, optionally using configuration specified in *config\_file*, and write it to *stdout*.
+If no *config\_file* is specified, *jsbundle* will look for a *jsbundle.json* file in the current working directory and use that if it exists.
 
 This command is basically equivalent to running:
 
@@ -26,10 +27,11 @@ For production deployment, you'll probably want to pipe the resulting output to 
 
 ### devcdn
 
-    devcdn [config_file] [--port tcp_port]
+    [JSBUNDLE_ENV=<env>] devcdn [config_file] [--port tcp_port]
 
 Start a "Dev CDN", serving on *tcp\_port* (default 8081), optionally using configuration specified in *config\_file*.
 The *entry\_file* passed to *jsbundle* is determined by the request URL, which will be resolved relative to the current working directory of *devcdn*.
+If no *config\_file* is specified, *devcdn* will look for a *jsbundle.json* file in the current working directory and use that if it exists.
 
 ## Tests
 
@@ -45,33 +47,45 @@ Test coverage is currently mediocre. You can run tests with:
 
 * The special variable *\_\_dirname* doesn't really make sense in the context of browser modules, so while the variable exists, its value is *undefined*.
 
-## Config
+## Configuration and JSBUNDLE\_ENV
 
-### Example
+### Example jsbundle.json
 
     {
-      "mangleNames": true,
+      "default": {
+        "mangleNames": false,
+        "beforeBundle": [],
+        "afterBundle": [],
 
-      "beforeBundle": [],
-      "afterBundle": [],
+        "extraRequires": {
+          "_": "underscore",
+          "Logger": "./ext/logger"
+        },
+        "beforeModuleBody": [
+          "var logger = new Logger(__filename);"
+        ],
+        "afterModuleBody": [],
 
-      "extraRequires": {
-        "_": "underscore",
-        "Logger": "./ext/logger"
+        "outputFilters": [
+          "./ext/logger-filter"
+        ]
+        "loggerFilterLevel": "debug"
       },
-      "beforeModuleBody": [
-        "var logger = new Logger(__filename);"
-      ],
-      "afterModuleBody": [],
 
-      "outputFilters": [
-        "./ext/logger-filter"
-      ],
+      "production": {
+        "mangleNames": true,
+        "loggerFilterLevel": "error",
+        "bundleUrl": "https://s3.amazonaws.com/xyz/abc.js"
+      },
 
-      "loggerFilterLevel": "warn"
+      "development": {
+        "outputFilters": []
+      }
     }
 
-All configuration is optional. If you want to configure *jsbundle* operation, create a JSON file with one or more of the following key/value pairs:
+*jsbundle* uses the "default" configuration as a base, and then, depending on the value of the JSBUNDLE\_ENV environment variable, overrides or adds more values.
+In the example above, if the value of JSBUNDLE\_ENV is "production", "mangleNames" will be true and the "loggerFilterLevel" will be "error".
+If the value of JSBUNDLE\_ENV is "development", no output filters will be appplied.
 
 ### mangleNames
 By default, *jsbundle* uses the absolute path of a file as its module id. This is useful for development, but in production it's wasteful and potentially reveals information you want to keep private. If you enable the **mangleNames** option, module ids will be numeric instead.
@@ -107,6 +121,10 @@ Example:
 [Here is a more useful example.](https://github.com/proxv/jsbundle/blob/master/ext/logger-filter.js)
 
 **Note**: output filters may require additional configuration options, like the *loggerFilterLevel* above. These values should be written into the same configuration JSON file. If you write your own output filter, it's probably a good idea to avoid collisions by prefixing additional configuration option names with the name of the output filter.
+
+### bundleUrl
+The bundleUrl will be accessible in your code by accessing *module.bundleUrl*. If having this information accessible from your code would be useful, set its value to the url from which you'll be serving the bundled code.
+The "Dev CDN" configures this value automatically for bundles that it serves.
 
 ## Thanks To
 

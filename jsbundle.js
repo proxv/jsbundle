@@ -1,6 +1,4 @@
-var bundle = require('./lib/bundle');
-var devCdn = require('./lib/dev-cdn');
-
-exports.bundle = bundle;
-exports.devCdn = devCdn;
+exports.bundle = require('./lib/bundle');
+exports.devCdn = require('./lib/dev-cdn');
+exports.parseConfig = require('./lib/parse-config');
 
