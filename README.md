@@ -10,7 +10,38 @@ It comes with a "Dev CDN" that will watch your files for changes and serve the l
 
 It has good error handling and runs without any configuration.
 
-## Usage
+
+## Quickstart
+
+### Install
+
+    npm install -g jsbundle
+
+Or clone this repo, then from the repo dir, run:
+
+    npm link
+    npm install
+
+### Run
+
+From your Node package's directory, run:
+
+    jsbundle
+
+Just for fun, you can try it out with minification:
+
+    npm install -g uglify-js
+    jsbundle | uglifyjs --unsafe --lift-vars --consolidate-primitive-values
+
+You can also pipe this to node:
+
+    jsbundle 2>/dev/null | uglifyjs --unsafe --lift-vars --consolidate-primitive-values | node
+
+which should give you the exact same output as:
+
+    node .
+
+## More Detailed Usage Instructions
 
 ### jsbundle
 
