@@ -59,15 +59,17 @@ Test coverage is currently mediocre. You can run tests with:
           "logger"
         ],
         "loggerLevel": "debug"
+        "mangleNames": false
       },
 
       "production": {
-        "loggerLevel": "error"
+        "loggerLevel": "error",
+        "mangleNames" true
       }
     }
 
 *jsbundle* uses the "defaults" configuration as a base, and then, depending on the value of the JSBUNDLE\_ENV environment variable, overrides or adds more values.
-In the example above, if the value of JSBUNDLE\_ENV is "production", "loggerLevel" will be "error" instead of "debug".
+In the example above, if the value of JSBUNDLE\_ENV is "production", "loggerLevel" will be "error" instead of "debug" and module names will be mangled.
 
 **See the included [jsbundle.json](https://github.com/proxv/jsbundle/blob/master/jsbundle.json) for an annotated example of all configuration options.**
 
