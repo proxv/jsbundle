@@ -29,7 +29,7 @@
 
     "mangleNames": true,      # Use numeric ids instead of absolute file paths for the module.ids.
 
-    "loggerLevel": "warn",   # Filter out all but "error" and "warn" logs in production mode (used by the logger filter).
+    "loggerLevel": "warn",    # Filter out all but "error" and "warn" logs in production mode (used by the logger filter).
 
     "bundleUrl":              # Exposed in your code as module.bundleUrl.
       "http://s3.amazonaws.com/example/bundle.js"
