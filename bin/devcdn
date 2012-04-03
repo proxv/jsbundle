@@ -3,5 +3,7 @@
 var argv = require('optimist').argv;
 var jsbundle = require('../jsbundle');
 
-jsbundle.devCdn(argv.port || 8081, argv._[0] || argv.config);
+var config = jsbundle.parseConfig(argv.config, null, argv.env || process.env.JSBUNDLE_ENV);
+
+jsbundle.devCdn(argv.port || 8081, config);
 
