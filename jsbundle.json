@@ -9,8 +9,8 @@
     "mangleNames": false,     # Leave module ids as absolute file paths on the local filesystem.
                               # This will make the __filename variable behave as it does in Node.
 
-    "extraRequires": {        # If an extra require begins with a '.', it is resolved relative to this config file.
-      "_": "underscore"       # Otherwise, its value is passed through directly to Node's module resolution algorithm.
+    "extraRequires": {        # Extra requires resolved relative to this config file. That is, as if this config file
+      "_": "underscore"       # contained a require("value") statement.
     },
 
     "devCdnPaths": [          # Paths used to search for files requested via the dev CDN.

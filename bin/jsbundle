@@ -1,9 +1,14 @@
 #!/usr/bin/env node
 
+var fs = require('fs');
 var argv = require('optimist').argv;
 var jsbundle = require('../jsbundle');
+var util = require('util');
 
-var config = jsbundle.parseConfig(argv.config, argv.env || process.env.JSBUNDLE_ENV);
-
-require('util').puts(jsbundle.bundle(config).src);
+if (argv.version) {
+  util.puts(JSON.parse(fs.readFileSync(__dirname + '/../package.json', 'utf-8')).version);
+} else {
+  var config = jsbundle.parseConfig(argv.config, argv.env || process.env.JSBUNDLE_ENV);
+  util.puts(jsbundle.bundle(config).src);
+}
 
