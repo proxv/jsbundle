@@ -45,11 +45,11 @@ which should give you the exact same output as:
 
 ### jsbundle
 
-    [JSBUNDLE_ENV=<env>] jsbundle [entry_file] [--config=config_file] [--env=env]
+    [JSBUNDLE_ENV=<env>] jsbundle [--config=config_file] [--env=env]
 
-Bundle up *entry\_file* and all its dependencies, optionally using configuration specified in *config\_file*, and write it to *stdout*.
-If no *entry\_file* is specified, jsbundle will use, in decreasing order of precedence, the "entryFile" value defined in the *config\_file*, the "main" file defined in package.json, or a file named *index.js* in the current directory.
+Create a bundle.
 If no *config\_file* is specified, *jsbundle* will look for a *jsbundle.json* file in the current working directory and use that if it exists.
+The file jsbundle will use as an entry point is resolved as, in decreasing order of precedence, the "entryFile" value defined in the *config\_file*, the "main" file defined in package.json, or a file named *index.js* in the current directory.
 You can specify the JSBUNDLE\_ENV (see below) either via an environment variable or by passing a value to the --env flag.
 
 This command is basically equivalent to running:
@@ -62,11 +62,12 @@ For production deployment, you'll probably want to pipe the resulting output to 
 
 ### devcdn
 
-    [JSBUNDLE_ENV=<env>] devcdn [config_file] [--port=tcp_port] [--env=env]
+    [JSBUNDLE_ENV=<env>] devcdn [--config=config_file] [--env=env]
 
-Start a "Dev CDN", serving on *tcp\_port* (default 8081), optionally using configuration specified in *config\_file*.
-The *entry\_file* passed to *jsbundle* is determined by the request URL, which will be resolved based on the *devCdnPaths* defined in the config file (defaulting to the current working directory of *devcdn*).
+Start a "Dev CDN" bundle HTTP server.
 If no *config\_file* is specified, *devcdn* will look for a *jsbundle.json* file in the current working directory and use that if it exists.
+The Dev CDN will run on the *devCdnPort* specified in the config file, or 8081 if none is specified.
+The entry file passed to *jsbundle* is determined by the request URL, which will be resolved relative to the *devCdnPaths* defined in the config file (defaulting to the current working directory of *devcdn*).
 You can specify the JSBUNDLE\_ENV (see below) either via an environment variable or by passing a value to the --env flag.
 
 ## Tests
@@ -90,7 +91,8 @@ Test coverage is currently mediocre. You can run tests with:
 
     {
       "defaults": {
-        "mangleNames": false
+        "mangleNames": false,
+        "devCdnPort": 8090
       },
 
       "production": {

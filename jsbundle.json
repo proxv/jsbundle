@@ -17,6 +17,8 @@
       "test/fixtures"         # Resolved relative to this config file. Defaults to [ "." ].
     ],
 
+    "devCdnPort": "9090",     # TCP port for dev CDN. Defaults to 8081 if not set.
+
     "filters": [              # If a filter path begins with a '.', it is resolved relative to this config file.
       "logger"                # Otherwise, it is resolved relative to the jsbundle filters/ subdirectory.
     ],
