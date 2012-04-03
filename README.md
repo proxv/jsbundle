@@ -45,11 +45,12 @@ which should give you the exact same output as:
 
 ### jsbundle
 
-    [JSBUNDLE_ENV=<env>] jsbundle <entry_file> [--config=config_file] [--env=env]
+    [JSBUNDLE_ENV=<env>] jsbundle [entry_file] [--config=config_file] [--env=env]
 
 Bundle up *entry\_file* and all its dependencies, optionally using configuration specified in *config\_file*, and write it to *stdout*.
+If no *entry\_file* is specified, jsbundle will use, in decreasing order of precedence, the "entryFile" value defined in the *config\_file*, the "main" file defined in package.json, or a file named *index.js* in the current directory.
 If no *config\_file* is specified, *jsbundle* will look for a *jsbundle.json* file in the current working directory and use that if it exists.
-You can specify the JSBUNDLE_ENV either via an environment variable or by passing a value to the --env flag.
+You can specify the JSBUNDLE\_ENV (see below) either via an environment variable or by passing a value to the --env flag.
 
 This command is basically equivalent to running:
 
@@ -66,7 +67,7 @@ For production deployment, you'll probably want to pipe the resulting output to 
 Start a "Dev CDN", serving on *tcp\_port* (default 8081), optionally using configuration specified in *config\_file*.
 The *entry\_file* passed to *jsbundle* is determined by the request URL, which will be resolved based on the *devCdnPaths* defined in the config file (defaulting to the current working directory of *devcdn*).
 If no *config\_file* is specified, *devcdn* will look for a *jsbundle.json* file in the current working directory and use that if it exists.
-You can specify the JSBUNDLE_ENV either via an environment variable or by passing a value to the --env flag.
+You can specify the JSBUNDLE\_ENV (see below) either via an environment variable or by passing a value to the --env flag.
 
 ## Tests
 
@@ -82,25 +83,23 @@ Test coverage is currently mediocre. You can run tests with:
 
 * The special variable *\_\_dirname* doesn't really make sense in the context of browser modules, so while the variable exists, its value is *undefined*.
 
+
 ## Configuration and JSBUNDLE\_ENV
+
+### Example Config
 
     {
       "defaults": {
-        "filters": [
-          "logger"
-        ],
-        "loggerLevel": "debug"
         "mangleNames": false
       },
 
       "production": {
-        "loggerLevel": "error",
         "mangleNames" true
       }
     }
 
 *jsbundle* uses the "defaults" configuration as a base, and then, depending on the value of the JSBUNDLE\_ENV environment variable, overrides or adds more values.
-In the example above, if the value of JSBUNDLE\_ENV is "production", "loggerLevel" will be "error" instead of "debug" and module names will be mangled.
+In the example above, if the value of JSBUNDLE\_ENV is "production", module names will be mangled.
 
 **See the included [jsbundle.json](https://github.com/proxv/jsbundle/blob/master/jsbundle.json) for an annotated example of all configuration options.**
 
