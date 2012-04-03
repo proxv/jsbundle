@@ -60,7 +60,7 @@ function init(options) {
       }
     },
     requires: logLevel === "off" ? [] : [ loggerFile ], // must be absolute paths
-    lineDelta: 1
+    lineDelta: logLevel === "off" ? 0 : 1
   }
 
 }
