@@ -24,7 +24,7 @@ vows.describe('test Module').addBatch({
 
     "updateRequires": function(mod) {
       mod.updateRequires();
-      var src = mod._moduleDef;
+      var src = mod._wrappedSrc;
       assert.match(src, /underscore.js"\s*\)/);
       assert.match(src, /def.js"\s*\)/);
     },

@@ -14,10 +14,11 @@ It has good error handling and runs without any configuration.
 
 ### jsbundle
 
-    [JSBUNDLE_ENV=<env>] jsbundle <entry_file> [config_file]
+    [JSBUNDLE_ENV=<env>] jsbundle <entry_file> [--config=config_file] [--env=env]
 
 Bundle up *entry\_file* and all its dependencies, optionally using configuration specified in *config\_file*, and write it to *stdout*.
 If no *config\_file* is specified, *jsbundle* will look for a *jsbundle.json* file in the current working directory and use that if it exists.
+You can specify the JSBUNDLE_ENV either via an environment variable or by passing a value to the --env flag.
 
 This command is basically equivalent to running:
 
@@ -29,11 +30,12 @@ For production deployment, you'll probably want to pipe the resulting output to 
 
 ### devcdn
 
-    [JSBUNDLE_ENV=<env>] devcdn [config_file] [--port tcp_port]
+    [JSBUNDLE_ENV=<env>] devcdn [config_file] [--port=tcp_port] [--env=env]
 
 Start a "Dev CDN", serving on *tcp\_port* (default 8081), optionally using configuration specified in *config\_file*.
-The *entry\_file* passed to *jsbundle* is determined by the request URL, which will be resolved relative to the current working directory of *devcdn*.
+The *entry\_file* passed to *jsbundle* is determined by the request URL, which will be resolved based on the *devCdnPaths* defined in the config file (defaulting to the current working directory of *devcdn*).
 If no *config\_file* is specified, *devcdn* will look for a *jsbundle.json* file in the current working directory and use that if it exists.
+You can specify the JSBUNDLE_ENV either via an environment variable or by passing a value to the --env flag.
 
 ## Tests
 
@@ -51,82 +53,23 @@ Test coverage is currently mediocre. You can run tests with:
 
 ## Configuration and JSBUNDLE\_ENV
 
-### Example jsbundle.json
-
     {
-      "default": {
-        "mangleNames": false,
-        "beforeBundle": [],
-        "afterBundle": [],
-
-        "extraRequires": {
-          "_": "underscore",
-          "Logger": "./ext/logger"
-        },
-        "beforeModuleBody": [
-          "var logger = new Logger(__filename);"
+      "defaults": {
+        "filters": [
+          "logger"
         ],
-        "afterModuleBody": [],
-
-        "outputFilters": [
-          "./ext/logger-filter"
-        ]
-        "loggerFilterLevel": "debug"
+        "loggerLevel": "debug"
       },
 
       "production": {
-        "mangleNames": true,
-        "loggerFilterLevel": "error",
-        "bundleUrl": "https://s3.amazonaws.com/xyz/abc.js"
-      },
-
-      "development": {
-        "outputFilters": []
+        "loggerLevel": "error"
       }
     }
 
-*jsbundle* uses the "default" configuration as a base, and then, depending on the value of the JSBUNDLE\_ENV environment variable, overrides or adds more values.
-In the example above, if the value of JSBUNDLE\_ENV is "production", "mangleNames" will be true and the "loggerFilterLevel" will be "error".
-If the value of JSBUNDLE\_ENV is "development", no output filters will be appplied.
+*jsbundle* uses the "defaults" configuration as a base, and then, depending on the value of the JSBUNDLE\_ENV environment variable, overrides or adds more values.
+In the example above, if the value of JSBUNDLE\_ENV is "production", "loggerLevel" will be "error" instead of "debug".
 
-### mangleNames
-By default, *jsbundle* uses the absolute path of a file as its module id. This is useful for development, but in production it's wasteful and potentially reveals information you want to keep private. If you enable the **mangleNames** option, module ids will be numeric instead.
-
-### beforeBundle
-An array of arbitrary JavaScript statements to insert *before* the entire bundle.
-
-### afterBundle
-An array of arbitrary JavaScript statements to insert *after* the entire bundle.
-
-### extraRequires
-You can specify additional requires that *jsbundle* will automatically add to all of your modules. This is useful for e.g. ensuring you always have underscore available without having to pollute the global namespace or remember to manually require it every time. The value for this configuration option must be an object literal, with keys the variable name for the required module and values the path to the module. Relative paths will be resolved relative to the config file location first, then relative to the *jsbundle* repository directory.
-
-### beforeModuleBody
-An array of arbitrary JavaScript statements to insert *before* every module body.
-
-### afterModuleBody
-An array of arbitrary JavaScript statements to insert *after* every module body.
-
-### outputFilters
-An array of output filters module files. Relative paths are resolved relative to the config file path first, then relative to the *jsbundle* repository directory.
-
-Output filters allow you to specify additional ways to transform your module code. They are regular Node modules that must export an *init* function. This function takes in the *jsbundle* configuration object as a parameter and returns a second function. The returned function must accept a string containing the source code of a module and return the transformed source code, also as a string.
-
-Example:
-
-    exports.init = function(config) {
-      return function(sourceCode) {
-        return sourceCode + '; alert("this is a silly output filter");';
-      };
-    };
-
-[Here is a more useful example.](https://github.com/proxv/jsbundle/blob/master/ext/logger-filter.js)
-
-**Note**: output filters may require additional configuration options, like the *loggerFilterLevel* above. These values should be written into the same configuration JSON file. If you write your own output filter, it's probably a good idea to avoid collisions by prefixing additional configuration option names with the name of the output filter.
-
-### bundleUrl
-The bundleUrl will be accessible in your code by accessing *module.bundleUrl*. If having this information accessible from your code would be useful, set its value to the url from which you'll be serving the bundled code.
-The "Dev CDN" configures this value automatically for bundles that it serves.
+**See the included [jsbundle.json](https://github.com/proxv/jsbundle/blob/master/jsbundle.json) for an annotated example of all configuration options.**
 
 ## Thanks To
 

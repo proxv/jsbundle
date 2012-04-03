@@ -1,17 +1,19 @@
 #!/usr/bin/env node
 
-exports.hi = function() {
-  logger.warn(
-    'derp'
-  );
-}
+logger.warn(
+  'this code executed!'
+);
 
 var def = require(
   './def\
 .js'
-);
+)();
 
-alert(def());
+if (typeof alert !== 'undefined') {
+  alert(def);
+} else {
+  output = def;
+}
 
 require('./ghi.js');
 

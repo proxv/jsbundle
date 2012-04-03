@@ -1,5 +1,6 @@
 function Logger(name) {
-  this._name = name;
+  var nameParts = String(name).split('/');
+  this._name = nameParts.slice(nameParts.length - 3).join('/');
 }
 
 var logMethods = ['error', 'warn', 'info', 'debug', 'trace'];
@@ -7,15 +8,14 @@ var logMethods = ['error', 'warn', 'info', 'debug', 'trace'];
 for (var index = 0, len = logMethods.length; index < len; ++index) {
   (function(index, funcName) {
     Logger.prototype[funcName] = function() {
-      var con = self.console;
       var message = [funcName[0], '[', this._name, ']'].join('');
       var args = Array.prototype.slice.call(arguments);
       var stack_traces = [];
 
-      // logger.trace -> console.log
+      // logger.trace -> consolesole.log
       funcName = funcName === 'trace' ? 'log' : funcName;
 
-      if (!con) {
+      if (!console) {
         return;
       }
 
@@ -29,28 +29,28 @@ for (var index = 0, len = logMethods.length; index < len; ++index) {
         }
       }
 
-      if (con.firebug) {
+      if (console.firebug) {
         args.unshift(message);
-        con[funcName].apply(self, args);
+        console[funcName].apply(self, args);
       } else {
         if (args.length <= 0) {
-          con[funcName] ? con[funcName](message) :
-            con.log(message);
+          console[funcName] ? console[funcName](message) :
+            console.log(message);
         } else if (args.length === 1) {
-          con[funcName] ? con[funcName](message, args[0]) :
-            con.log(message, args[0]);
+          console[funcName] ? console[funcName](message, args[0]) :
+            console.log(message, args[0]);
         } else {
-          con[funcName] ? con[funcName](message, args) :
-            con.log(message, args);
+          console[funcName] ? console[funcName](message, args) :
+            console.log(message, args);
         }
       }
 
       var len = stack_traces.length;
 
       if (len > 0) {
-        con.log('Listing exception stack traces individually:');
+        console.log('Listing exception stack traces individually:');
         for (var i = 0; i < len; ++i) {
-          con.log(stack_traces[i]); // why? because in Google Chrome,
+          console.log(stack_traces[i]); // why? because in Google Chrome,
                                     // this will make clickable links
         }
       }

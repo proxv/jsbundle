@@ -1,7 +1,12 @@
 {
-  "default": {
+  "defaults": {
+    "entryFile": "abc.js",
     "extraRequires": {
       "_": "underscore"
-    }
+    },
+    "filters": [
+      "logger"
+    ],
+    "loggerLevel": "off"
   }
 }

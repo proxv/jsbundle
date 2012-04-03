@@ -1,0 +1,40 @@
+{                             # jsbundle config files are JSON files with hash-mark comments allowed.
+
+  "defaults": {               # These are default options that may overridden by JSBUNDLE_ENV-specific options.
+
+    "entryFile":              # The file where bundling should start. Also the first module executed when the bundle is executed.
+      "test/fixtures/abc.js", # Resolved relative to this config file. If this value is not defined, the "main" file
+                              # from the package.json or a file named "index.js" will be used.
+
+    "mangleNames": false,     # Leave module ids as absolute file paths on the local filesystem.
+                              # This will make the __filename variable behave as it does in Node.
+
+    "extraRequires": {        # If an extra require begins with a '.', it is resolved relative to this config file.
+      "_": "underscore"       # Otherwise, its value is passed through directly to Node's module resolution algorithm.
+    },
+
+    "devCdnPaths": [          # Paths used to search for files requested via the dev CDN.
+      "test/fixtures"         # Resolved relative to this config file. Defaults to [ "." ].
+    ],
+
+    "filters": [              # If a filter path begins with a '.', it is resolved relative to this config file.
+      "logger"                # Otherwise, it is resolved relative to the jsbundle filters/ subdirectory.
+    ],
+
+    "loggerLevel": "debug"    # Filter out anything below "debug" logs (used by the logger filter).
+                              # Possible values: off, error, warn, info, debug, trace.
+  },
+
+  "production": {             # Options that only apply when the JSBUNDLE_ENV is "production".
+
+    "mangleNames": true,      # Use numeric ids instead of absolute file paths for the module.ids.
+
+    "loggerLevel": "warn",   # Filter out all but "error" and "warn" logs in production mode (used by the logger filter).
+
+    "bundleUrl":              # Exposed in your code as module.bundleUrl.
+      "http://s3.amazonaws.com/example/bundle.js"
+
+  }
+
+}
+

@@ -12,7 +12,9 @@
           exports: {},
           bundleUrl: @bundleUrl
         };
-        mod.main = _$_modules[@mainModuleId];
+        if (id === @mainModuleId) {
+          _$_require.main = mod;
+        }
         moduleFn(mod, mod.exports, _$_require, id);
       }
       return mod.exports;
@@ -21,11 +23,7 @@
     }
   }
 
-  @beforeBundle
-
   @moduleDefs
-
-  @afterBundle
 
   _$_require(@mainModuleId);
 })();
