@@ -2,12 +2,12 @@ var vows = require('vows');
 var assert = require('assert');
 var path = require('path');
 var vm = require('vm');
-var bundle = require('../lib/bundle');
+var Bundle = require('../lib/bundle');
 var parseConfig = require('../lib/parse-config');
 
 vows.describe('bundle').addBatch({
   "no mangled names": {
-    topic: bundle(parseConfig(__dirname + '/fixtures/config.json', null)).src,
+    topic: (new Bundle(parseConfig(__dirname + '/fixtures/config.json'))).compile(),
 
     "find all modules": function(bundled) {
       assert.match(bundled, /moduleFns\["[^"]+abc.js"\]/);
@@ -27,7 +27,7 @@ vows.describe('bundle').addBatch({
     topic: function() {
       var config = parseConfig(__dirname + '/fixtures/config.json', null);
       config.mangleNames = true;
-      return bundle(config).src;
+      return (new Bundle(config)).compile();
     },
 
     "execute bundled code": function(bundled) {
