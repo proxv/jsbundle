@@ -1,7 +1,8 @@
 {
   "author": "ProxV, Inc.",
   "name": "jsbundle",
-  "description": "Bundle your modules into a single file for the browser.",
+  "description": "Simple, clean, and automatic bundling of your Node modules and packages for use in the browser.",
+  "keywords": "browser require bundle module package static-analysis",
   "version": "0.6.2",
   "repository": {
     "type": "git",
