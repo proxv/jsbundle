@@ -2,13 +2,13 @@
 
 **jsbundle** takes your Node modules and makes them work in the browser.
 
-It finds all *require* calls in your code and includes the necessary module files. Then, it wraps all these modules using the Node variant of CommonJS module headers.
+It finds all <code>require</code> calls in your code and includes the necessary module files. Then, it wraps all these modules using the Node variant of CommonJS module headers.
 
-It handles *node\_modules* directories and *package.json* files just like Node does.
+It handles <code>node_modules</code> directories and <code>package.json</code> files just like Node does.
 
-It comes with a "Dev CDN" that will watch your files for changes and serve the latest *jsbundled* version of your code via local HTTP.
+It comes with a "Dev CDN" that will watch your files for changes and serve the latest jsbundled version of your code via local HTTP.
 
-It has good error handling and runs without any configuration.
+It has good error handling and will probably do what you want without any configuration.
 
 
 ## Quickstart
