@@ -48,8 +48,8 @@ which should give you the exact same output as:
     [JSBUNDLE_ENV=<env>] jsbundle [--config=config_file] [--env=env]
 
 Create a bundle.
-If no *config\_file* is specified, *jsbundle* will look for a *jsbundle.json* file in the current working directory and use that if it exists.
-The file jsbundle will use as an entry point is resolved as, in decreasing order of precedence, the "entryFile" value defined in the *config\_file*, the "main" file defined in package.json, or a file named *index.js* in the current directory.
+If no config file is specified, jsbundle will look for a <code>jsbundle.json</code> file in the current working directory and use that if it exists. The current working directory will be set to the directory containing the config file if one is found.
+The file jsbundle will use as an entry point for bundling is resolved as, in decreasing order of precedence, the "entryFile" value defined in the config file, the "main" file defined in package.json, or a file named index.js in the current working directory.
 You can specify the JSBUNDLE\_ENV (see below) either via an environment variable or by passing a value to the --env flag.
 
 This command is basically equivalent to running:
@@ -62,13 +62,12 @@ For production deployment, you'll probably want to pipe the resulting output to 
 
 ### devcdn
 
-    [JSBUNDLE_ENV=<env>] devcdn [--config=config_file] [--env=env]
+    [JSBUNDLE_ENV=<env>] devcdn [--port=port] [--env=env]
 
 Start a "Dev CDN" bundle HTTP server.
-If no *config\_file* is specified, *devcdn* will look for a *jsbundle.json* file in the current working directory and use that if it exists.
-The Dev CDN will run on the *devCdnPort* specified in the config file, or 8081 if none is specified.
-The entry file passed to *jsbundle* is determined by the request URL, which will be resolved relative to the *devCdnPaths* defined in the config file (defaulting to the current working directory of *devcdn*).
-You can specify the JSBUNDLE\_ENV (see below) either via an environment variable or by passing a value to the --env flag.
+The Dev CDN will run on the port specified in the config file, or 8081 if none is specified.
+The Dev CDN finds all package.json files below the directory from which it is executed and can serve these as bundles. Bundle names are taken from the "name" field of the package.json file, with ".js" appended. node\_modules directories are ignored. So, if you run the Dev CDN from a package directory with the "name" of <code>example</code> and on the default port, you can request the bundled package at the URL: <code>http://localhost:8081/example.js</code>.
+You can specify the JSBUNDLE\_ENV (see below) either via an environment variable or by passing a value to the --env flag. The JSBUNDLE\_ENV will be used to evaluate and jsbundle.json files encountered in the served packages.
 
 ## Tests
 
@@ -92,7 +91,6 @@ Test coverage is currently mediocre. You can run tests with:
     {
       "defaults": {
         "mangleNames": false,
-        "devCdnPort": 8090
       },
 
       "production": {
@@ -103,7 +101,7 @@ Test coverage is currently mediocre. You can run tests with:
 *jsbundle* uses the "defaults" configuration as a base, and then, depending on the value of the JSBUNDLE\_ENV environment variable, overrides or adds more values.
 In the example above, if the value of JSBUNDLE\_ENV is "production", module names will be mangled.
 
-**See the included [jsbundle.json](https://github.com/proxv/jsbundle/blob/master/jsbundle.json) for an annotated example of all configuration options.**
+**See the included [jsbundle.json](https://raw.github.com/proxv/jsbundle/master/jsbundle.json) for an annotated example of all configuration options.**
 
 ## Thanks To
 

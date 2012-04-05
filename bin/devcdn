@@ -1,9 +1,11 @@
 #!/usr/bin/env node
 
 var argv = require('optimist').argv;
-var jsbundle = require('../jsbundle');
+var connect = require('connect');
+var makeDevCdn = require('../jsbundle').devCdn;
 
-var config = jsbundle.parseConfig(argv.config, argv.env || process.env.JSBUNDLE_ENV);
+var port = argv.port || argv._[0] || 8081;
+var devCdn = makeDevCdn(port, argv.env || process.env.JSBUNDLE_ENV);
 
-jsbundle.devCdn(config);
+connect().use(devCdn).listen(port);
 

@@ -9,6 +9,12 @@ if (argv.version) {
   util.puts(JSON.parse(fs.readFileSync(__dirname + '/../package.json', 'utf-8')).version);
 } else {
   var config = jsbundle.parseConfig(argv.config, argv.env || process.env.JSBUNDLE_ENV);
-  util.puts((new jsbundle.Bundle(config)).compile());
+  var bundle = new jsbundle.Bundle(config);
+  var compiled = bundle.compile();
+  if (bundle.error) {
+    console.error(bundle.error.stack);
+  } else {
+    util.puts(compiled);
+  }
 }
 

@@ -9,15 +9,11 @@
     "mangleNames": false,     # Leave module ids as absolute file paths on the local filesystem.
                               # This will make the __filename variable behave as it does in Node.
 
-    "extraRequires": {        # Extra requires resolved relative to this config file. That is, as if this config file
-      "_": "underscore"       # contained a require("value") statement.
-    },
-
-    "devCdnPaths": [          # Paths used to search for files requested via the dev CDN.
-      "test/fixtures"         # Resolved relative to this config file. Defaults to [ "." ].
-    ],
-
-    "devCdnPort": "9090",     # TCP port for dev CDN. Defaults to 8081 if not set.
+    "extraRequires": {        # Modules to require in all of your modules. These will be added at the top of your modules as:
+      "_": "underscore"       # "var <key> = require('<value>');". In this example, every module gets this line prepended:
+                              # var _ = require('underscore');
+                              # Extra requires are resolved relative to this config file. That is, as if this config file
+    },                        # contained a require('<value>') statement.
 
     "filters": [              # If a filter path begins with a '.', it is resolved relative to this config file.
       "logger"                # Otherwise, it is resolved relative to the jsbundle filters/ subdirectory.
