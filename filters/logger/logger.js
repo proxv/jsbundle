@@ -12,7 +12,7 @@ for (var index = 0, len = logMethods.length; index < len; ++index) {
       var args = Array.prototype.slice.call(arguments);
       var stack_traces = [];
 
-      // logger.trace -> consolesole.log
+      // logger.trace -> console.log
       funcName = funcName === 'trace' ? 'log' : funcName;
 
       if (!console) {
