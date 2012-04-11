@@ -21,6 +21,7 @@
 
     "loggerLevel": "debug"    # Filter out anything below "debug" logs (used by the logger filter).
                               # Possible values: off, error, warn, info, debug, trace.
+
   },
 
   "production": {             # Options that only apply when the JSBUNDLE_ENV is "production".

@@ -1,6 +1,8 @@
 (function() {
   var _$_moduleFns = {};
   var _$_modules = {};
+  var _$_mainModuleId = @mainModuleId;
+  var _$_moduleMap = @moduleMap;
 
   function _$_require(id) {
     var moduleFn = _$_moduleFns[id];
@@ -12,7 +14,7 @@
           exports: {},
           bundleUrl: @bundleUrl
         };
-        if (id === @mainModuleId) {
+        if (id === _$_mainModuleId) {
           _$_require.main = mod;
         }
         moduleFn(mod, mod.exports, _$_require, id);
@@ -27,6 +29,6 @@
 
   @devCdnAppends
 
-  _$_require(@mainModuleId);
+  _$_require(_$_mainModuleId);
 })();
 
