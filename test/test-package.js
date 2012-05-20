@@ -2,14 +2,15 @@ var vows = require('vows');
 var assert = require('assert');
 var path = require('path');
 var vm = require('vm');
-var Bundle = require('../lib/bundle');
-var parseConfig = require('../lib/parse-config');
+var jsbundle = require('../jsbundle');
+var PACKAGE_DIR = __dirname + '/fixtures/';
 
-vows.describe('bundle').addBatch({
+vows.describe('package').addBatch({
   "no mangled names": {
-    topic: (new Bundle(parseConfig(__dirname + '/fixtures/'))).compile(),
+    topic: jsbundle.compilePackage(PACKAGE_DIR),
 
     "find all modules": function(bundled) {
+      assert.equal(typeof bundled, 'string');
       assert.match(bundled, /moduleFns\["[^"]+abc.js"\]/);
       assert.match(bundled, /moduleFns\["[^"]+def.js"\]/);
       assert.match(bundled, /moduleFns\["[^"]+ghi.js"\]/);
@@ -26,9 +27,9 @@ vows.describe('bundle').addBatch({
 
   "mangled names": {
     topic: function() {
-      var config = parseConfig(__dirname + '/fixtures/');
+      var config = jsbundle.parseConfig(__dirname + '/fixtures/');
       config.mangleNames = true;
-      return (new Bundle(config)).compile();
+      return (new jsbundle.Bundle(config)).compile();
     },
 
     "execute bundled code": function(bundled) {

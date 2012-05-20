@@ -23,21 +23,16 @@ function usage() {
     see: https://github.com/proxv/jsbundle/blob/master/README.md for more details.');
 }
 
-if (argv.help) {
+
+if (argv.help || !argv._[0]) {
   usage();
 } else if (argv.version) {
   util.puts(JSON.parse(fs.readFileSync(__dirname + '/../package.json', 'utf-8')).version);
-} else if (argv._[0]) {
-  var packageDir = argv._[0];
-  var config = jsbundle.parseConfig(packageDir, process.env.JSBUNDLE_ENV, argv['bundle-url']);
-  var bundle = new jsbundle.Bundle(config);
-  var compiled = bundle.compile();
-  if (bundle.error) {
-    console.error(bundle.error.stack);
-  } else {
-    util.puts(compiled);
-  }
 } else {
-  usage();
+  try {
+    util.puts(jsbundle.compilePackage(argv._[0], process.env.JSBUNDLE_ENV, argv['bundle-url']));
+  } catch (e) {
+    console.error(e);
+  }
 }
 
