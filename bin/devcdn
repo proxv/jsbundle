@@ -2,10 +2,26 @@
 
 var argv = require('optimist').argv;
 var connect = require('connect');
+var fs = require('fs');
+var util = require('util');
 var makeDevCdn = require('../jsbundle').devCdn;
 
-var port = argv.port || argv._[0] || 8081;
-var devCdn = makeDevCdn(port, argv.env || process.env.JSBUNDLE_ENV);
+if (argv.help) {
+  util.puts('usage:\n\
+\n\
+\t[JSBUNDLE_ENV=<env>] devcdn [port]\n\
+\n\
+\tStart a "Dev CDN" serving all node packages below the current working directory as bundles.\n\
+\n\
+\tDefaults to port 8081.\n\
+\n\
+\tsee: https://github.com/proxv/jsbundle/blob/master/README.md for more details.');
+} else if (argv.version) {
+  util.puts(JSON.parse(fs.readFileSync(__dirname + '/../package.json', 'utf-8')).version);
+} else {
+  var port = argv._[0] || 8081;
+  var devCdn = makeDevCdn(port, process.env.JSBUNDLE_ENV);
+  connect().use(devCdn).listen(port);
+}
 
-connect().use(devCdn).listen(port);
 

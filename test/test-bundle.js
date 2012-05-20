@@ -7,7 +7,7 @@ var parseConfig = require('../lib/parse-config');
 
 vows.describe('bundle').addBatch({
   "no mangled names": {
-    topic: (new Bundle(parseConfig(__dirname + '/fixtures/config.json'))).compile(),
+    topic: (new Bundle(parseConfig(__dirname + '/fixtures/'))).compile(),
 
     "find all modules": function(bundled) {
       assert.match(bundled, /moduleFns\["[^"]+abc.js"\]/);
@@ -18,6 +18,7 @@ vows.describe('bundle').addBatch({
 
     "execute bundled code": function(bundled) {
       var env = {};
+      assert.equal(typeof bundled, 'string');
       vm.runInNewContext(bundled, env);
       assert.equal(env.output, 'output from module "def"');
     }
@@ -25,13 +26,14 @@ vows.describe('bundle').addBatch({
 
   "mangled names": {
     topic: function() {
-      var config = parseConfig(__dirname + '/fixtures/config.json', null);
+      var config = parseConfig(__dirname + '/fixtures/');
       config.mangleNames = true;
       return (new Bundle(config)).compile();
     },
 
     "execute bundled code": function(bundled) {
       var env = {};
+      assert.equal(typeof bundled, 'string');
       vm.runInNewContext(bundled, env);
       assert.equal(env.output, 'output from module "def"');
     }

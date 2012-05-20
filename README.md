@@ -26,7 +26,7 @@ Or clone this repo, then from the repo dir, run:
 
 From your Node package's directory, run:
 
-    jsbundle
+    jsbundle .
 
 Just for fun, you can try it out with minification:
 
@@ -45,26 +45,33 @@ which should give you the exact same output as:
 
 ### jsbundle
 
-    [JSBUNDLE_ENV=<env>] jsbundle [--config=config_file] [--env=env]
+    [JSBUNDLE_ENV=<env>] jsbundle <node_package_dir> [--bundle-url=bundle_url]
 
-Create a bundle.
-If no config file is specified, jsbundle will look for a <code>jsbundle.json</code> file in the current working directory and use that if it exists. The current working directory will be set to the directory containing the config file if one is found.
+Create a bundle from the node package contained in node_package_dir.
 
-The file jsbundle will use as an entry point for bundling is resolved as, in decreasing order of precedence, the "entryFile" value defined in the config file, the "main" file defined in package.json, or a file named index.js in the current working directory.
+If the node\_package\_dir contains a "jsbundle.json", that file will be used to configure jsbundle's operation.
 
-You can specify the JSBUNDLE\_ENV (see below) either via an environment variable or by passing a value to the --env flag.
+The entry file jsbundle will use to start bundling is one of (in decreasing order of precedence):
+
+  * the "entryFile" defined in the "jsbundle.json" file
+  * the "main" file defined in the node package's "package.json"
+  * the node package's "index.js" file
+
+Specifying a bundle\_url will override any bundle URL defined in the config file. This is useful for versioning/cache busting.
+
+The JSBUNDLE\_ENV environment variable determines how the config file is evaluated (see below).
 
 This command is basically equivalent to running:
 
-    node <entry_file>
+    node <node_package_dir>
 
-in the sense that when the resulting script is executed in the browser, the module *entry\_file* will be the first module to begin executing.
+in the sense that when the resulting script is executed in the browser, the package at node\_package\_dir will be the first to execute.
 
 For production deployment, you'll probably want to pipe the resulting output to the JavaScript minifier of your choice.
 
 ### devcdn
 
-    [JSBUNDLE_ENV=<env>] devcdn [--port=port] [--env=env]
+    [JSBUNDLE_ENV=<env>] devcdn [port]
 
 Start a "Dev CDN" bundle HTTP server.
 
