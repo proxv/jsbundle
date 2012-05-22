@@ -13,6 +13,7 @@ if (typeof alert !== 'undefined') {
   alert(def);
 } else {
   output = def;
+  console.log(def);
 }
 
 require('./ghi.js');

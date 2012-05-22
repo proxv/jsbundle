@@ -18,7 +18,11 @@ vows.describe('package').addBatch({
     },
 
     "execute bundled code": function(bundled) {
-      var env = {};
+      var env = {
+        console: {
+          log: function() {}
+        }
+      };
       assert.equal(typeof bundled, 'string');
       vm.runInNewContext(bundled, env);
       assert.equal(env.output, 'output from module "def"');
@@ -33,7 +37,11 @@ vows.describe('package').addBatch({
     },
 
     "execute bundled code": function(bundled) {
-      var env = {};
+      var env = {
+        console: {
+          log: function() {}
+        }
+      };
       assert.equal(typeof bundled, 'string');
       vm.runInNewContext(bundled, env);
       assert.equal(env.output, 'output from module "def"');
