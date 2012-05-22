@@ -1,8 +1,15 @@
 var parseConfig = require('./lib/parse-config');
 var Bundle = require('./lib/bundle');
 
-function compilePackage(packageDir, env, bundleUrl) {
-  var config = parseConfig(packageDir, env, bundleUrl);
+function compilePackage(configOrPackageDir, env, bundleUrl) {
+  var config;
+  if (typeof configOrPackageDir === 'string') {
+    var packageDir = configOrPackageDir;
+    config = parseConfig(packageDir, env, bundleUrl);
+  } else {
+    config = configOrPackageDir;
+  }
+
   var bundle = new Bundle(config);
   var compiled = bundle.compile();
   if (bundle.error) {
