@@ -19,7 +19,7 @@ function compilePackage(configOrPackageDir, env, bundleUrl) {
   }
 }
 
-exports.devCdn = require('./lib/dev-cdn');
+exports.createDevCdn = require('./lib/dev-cdn');
 exports.parseConfig = parseConfig;
 exports.Bundle = Bundle;
 exports.compilePackage = compilePackage;

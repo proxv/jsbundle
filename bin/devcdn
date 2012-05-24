@@ -4,7 +4,7 @@ var argv = require('optimist').argv;
 var connect = require('connect');
 var fs = require('fs');
 var util = require('util');
-var makeDevCdn = require('../jsbundle').devCdn;
+var jsbundle = require('../jsbundle');
 
 if (argv.help) {
   util.puts('usage:\n\
@@ -19,7 +19,7 @@ if (argv.help) {
 } else if (argv.version) {
   util.puts(JSON.parse(fs.readFileSync(__dirname + '/../package.json', 'utf-8')).version);
 } else {
-  var devCdn = makeDevCdn(process.env.JSBUNDLE_ENV);
+  var devCdn = jsbundle.createDevCdn(process.env.JSBUNDLE_ENV);
   var port = argv._[0] || 8081;
   connect().use(devCdn).listen(port);
 }
