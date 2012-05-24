@@ -12,7 +12,7 @@
         mod = _$_modules[id] = {
           id: id,
           exports: {},
-          bundleUrl: @bundleUrl
+          bundleUrl: JSBUNDLE_URL
         };
         if (id === _$_mainModuleId) {
           _$_require.main = mod;
