@@ -17,7 +17,7 @@
     "jsbundle": "./bin/jsbundle"
   },
   "dependencies": {
-    "uglify-js": "1.x.x",
+    "uglify-js": "1.3.0",
     "underscore": "1.x.x",
     "optimist": "0.3.x",
     "connect": "2.x.x"
