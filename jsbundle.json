@@ -6,8 +6,11 @@
       "test/fixtures/abc.js", # Resolved relative to this config file. If this value is not defined, the "main" file
                               # from the package.json or a file named "index.js" will be used.
 
+    "devRequire": true,       # Expose a window.devRequire function which allows requiring modules by name from the console.
+
     "mangleNames": false,     # Leave module ids as absolute file paths on the local filesystem.
                               # This will make the __filename variable behave as it does in Node.
+                              # "mangleNames": false implies "devRequire": true if "devRequire" is not otherwise explicitly set.
 
     "extraRequires": {        # Modules to require in all of your modules. These will be added at the top of your modules as:
       "_": "underscore"       # "var <key> = require('<value>');". In this example, every module gets this line prepended:
@@ -25,6 +28,8 @@
   },
 
   "production": {             # Options that only apply when the JSBUNDLE_ENV is "production".
+
+    "devRequire": false,      # No window.devRequire function will be created.
 
     "mangleNames": true,      # Use numeric ids instead of absolute file paths for the module.ids.
 

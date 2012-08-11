@@ -5,6 +5,16 @@ var vm = require('vm');
 var jsbundle = require('../jsbundle');
 var PACKAGE_DIR = __dirname + '/fixtures/';
 
+function execute(code, env) {
+  env.global = env;
+  try {
+    vm.runInNewContext(code, env);
+  } catch (e) {
+    console.error(code);
+    assert.equal(e.message, void 0);
+  }
+}
+
 vows.describe('package').addBatch({
   "no mangled names": {
     topic: jsbundle.compilePackage(PACKAGE_DIR),
@@ -24,7 +34,7 @@ vows.describe('package').addBatch({
         }
       };
       assert.equal(typeof bundled, 'string');
-      vm.runInNewContext(bundled, env);
+      execute(bundled, env);
       assert.equal(env.output, 'output from module "def"');
     }
   },
@@ -43,7 +53,7 @@ vows.describe('package').addBatch({
         }
       };
       assert.equal(typeof bundled, 'string');
-      vm.runInNewContext(bundled, env);
+      execute(bundled, env);
       assert.equal(env.output, 'output from module "def"');
     }
   }
