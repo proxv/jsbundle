@@ -46,24 +46,26 @@
     }
 
     function loadScript(url, index) {
-      var scriptNode = document.createElement('script');
-      scriptNode.setAttribute('src', url);
+      var head = document.head || document.getElementsByTagName('head')[0] || document.documentElement;
+      var script = document.createElement('script');
 
-      scriptNode.onload = function() {
-        if (!scriptNode.onloadDone) {
-          scriptNode.onloadDone = true;
+      script.src = url;
+
+      script.onload = script.onreadystatechange = function() {
+        if (!script.readyState || /loaded|complete/.test(script.readyState)) {
+          script.onload = script.onreadystatechange = null;
+
+          if (head && script.parentNode) {
+            head.removeChild(script);
+          }
+
+          script = null;
+
           registerScriptLoad(url, index);
         }
       };
-      scriptNode.onreadystatechange = function() {
-        if ((scriptNode.readyState === 'loaded' || scriptNode.readyState === 'complete') &&
-            !scriptNode.onloadDone) {
-          scriptNode.onloadDone = true;
-          registerScriptLoad(url, index);
-        }
-      };
 
-      document.getElementsByTagName('head')[0].appendChild(scriptNode);
+      head.insertBefore(script, head.firstChild);
     }
 
 
