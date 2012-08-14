@@ -19,7 +19,7 @@ if (typeof alert !== 'undefined') {
 
 if (typeof document !== 'undefined') {
   var $ = require('./jquery');
-  $('<h1>externalDep works!</h1>').appendTo($('body'));
+  $('<h1>externalDependency works!</h1>').appendTo($('body'));
 }
 
 require('./ghi.js');

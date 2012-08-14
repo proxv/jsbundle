@@ -46,12 +46,6 @@
     }
 
     function loadScript(url, index) {
-      if (typeof document === 'undefined' ||
-          !document.createElement ||
-          !document.getElementsByTagName) {
-        return registerScriptLoad(url, index);
-      }
-
       var scriptNode = document.createElement('script');
       scriptNode.setAttribute('src', url);
 
@@ -73,10 +67,16 @@
     }
 
 
-    for (var i = 0, len = _$_scriptsToLoad.length; i < len; i++) {
-      loadScript(_$_scriptsToLoad[i], i);
+    if (typeof document === 'undefined' ||
+        !document.createElement ||
+        !document.getElementsByTagName) {
+      // no DOM, so don't load external scripts
+      _$_scriptsToLoad = [];
+    } else {
+      for (var i = 0, len = _$_scriptsToLoad.length; i < len; i++) {
+        loadScript(_$_scriptsToLoad[i], i);
+      }
     }
-
   })();
 
   @moduleDefs
