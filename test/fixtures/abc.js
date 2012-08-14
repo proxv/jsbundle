@@ -16,5 +16,11 @@ if (typeof alert !== 'undefined') {
   console.log(def);
 }
 
+
+if (typeof document !== 'undefined') {
+  var $ = require('./jquery');
+  $('<h1>externalDep works!</h1>').appendTo($('body'));
+}
+
 require('./ghi.js');
 

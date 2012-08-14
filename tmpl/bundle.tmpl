@@ -25,10 +25,65 @@
     }
   }
 
+  var _$_scriptsToLoad = @scriptsToLoad;
+
+  function _$_initIfReady() {
+    for (var i = 0, len = _$_scriptsToLoad.length; i < len; i++) {
+      if (_$_scriptsToLoad[i]) {
+        return;
+      }
+    }
+
+    _$_require(_$_mainModuleId);
+  }
+
+  (function() {
+    var hasOwnProp = Object.prototype.hasOwnProperty;
+
+    function registerScriptLoad(url, index) {
+      _$_scriptsToLoad[index] = null;
+      _$_initIfReady();
+    }
+
+    function loadScript(url, index) {
+      if (typeof document === 'undefined' ||
+          !document.createElement ||
+          !document.getElementsByTagName) {
+        return registerScriptLoad(url, index);
+      }
+
+      var scriptNode = document.createElement('script');
+      scriptNode.setAttribute('src', url);
+
+      scriptNode.onload = function() {
+        if (!scriptNode.onloadDone) {
+          scriptNode.onloadDone = true;
+          registerScriptLoad(url, index);
+        }
+      };
+      scriptNode.onreadystatechange = function() {
+        if ((scriptNode.readyState === 'loaded' || scriptNode.readyState === 'complete') &&
+            !scriptNode.onloadDone) {
+          scriptNode.onloadDone = true;
+          registerScriptLoad(url, index);
+        }
+      };
+
+      document.getElementsByTagName('head')[0].appendChild(scriptNode);
+    }
+
+
+    for (var i = 0, len = _$_scriptsToLoad.length; i < len; i++) {
+      loadScript(_$_scriptsToLoad[i], i);
+    }
+
+  })();
+
   @moduleDefs
 
   @appends
 
-  _$_require(_$_mainModuleId);
+  _$_initIfReady();
+
 })();
 

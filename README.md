@@ -69,6 +69,32 @@ in the sense that when the resulting script is executed in the browser, the pack
 
 For production deployment, you'll probably want to pipe the resulting output to the JavaScript minifier of your choice.
 
+### Loading external scripts (e.g. CDN hosted jQuery) with module.externalDep
+
+In any of your modules that are browser-only, you can easily add external dependencies that are guaranteed to be loaded before your code executes by using the <code>module.externalDep</code> function.
+
+    module.externalDep('https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js');
+
+Note that the URL you pass to this function must be a constant string.
+
+Multiple calls to module.externalDep will load any given script URL only once. However, it only does naive string matching, so:
+
+    module.externalDep('https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js');
+    module.externalDep('https://AJAX.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js');
+
+will load jQuery twice. To avoid bugs caused by typos, it's advisable to create a wrapper module around each external script you load and then load the wrapper module in the rest of your code. For example:
+
+jquery.js:
+
+    module.externalDep('https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js');
+    module.exports = $.noConflict(true);
+
+myscript.js:
+
+    var $ = require('./jquery');
+    // etc...
+
+
 ### devcdn
 
     [JSBUNDLE_ENV=<env>] devcdn [port]
