@@ -59,7 +59,7 @@ if (typeof console !== 'undefined' && typeof console.log === 'function') {
     error: getLogFunction('error'),
     warn: getLogFunction('warn'),
     info: getLogFunction('info'),
-    debug: getLogFunction('debug'),
+    debug: getLogFunction('log'),
     trace: getLogFunction('log')
   };
 }
