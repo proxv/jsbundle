@@ -74,8 +74,10 @@ function init(options) {
                 var logger = new (require(' + JSON.stringify(loggerFile) + '));\n' + src;
       }
     },
-    requires: logLevel === "off" ? [] : [ loggerFile ], // must be absolute paths
-    lineDelta: logLevel === "off" ? 0 : 3
+
+    requires: logLevel === 'off' ? [] : [ loggerFile ], // must be absolute paths
+
+    lineDelta: logLevel === 'off' ? 0 : 3
   }
 }
 
