@@ -69,9 +69,9 @@ function init(options) {
       if (logLevel === 'off') {
         return src;
       } else {
-        return 'var __shortfilename = String(__filename).split("/");\n\
-                __shortfilename = __shortfilename.slice(__shortfilename.length - 3).join("/");\n\
-                var logger = new (require(' + JSON.stringify(loggerFile) + '));\n' + src;
+        return 'var __shortfilename = String(__filename).split("/");\n' +
+               '__shortfilename = __shortfilename.slice(__shortfilename.length - 3).join("/");\n' +
+               'var logger = new (require(' + JSON.stringify(loggerFile) + '));\n' + src;
       }
     },
 
