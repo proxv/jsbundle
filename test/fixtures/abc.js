@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
-logger.warn(
+logger.
+  warn(
   'this code executed!'
 );
 

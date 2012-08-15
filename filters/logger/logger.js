@@ -1,61 +1,67 @@
-function Logger(name) {
-  var nameParts = String(name).split('/');
-  this._name = nameParts.slice(nameParts.length - 3).join('/');
+function Logger() {
+  if (this.log) {
+    this.trace = this.log;
+    this.log = void 0;
+  }
 }
 
-var logMethods = ['error', 'warn', 'info', 'debug', 'trace'];
-
-for (var index = 0, len = logMethods.length; index < len; ++index) {
-  (function(index, funcName) {
-    Logger.prototype[funcName] = function() {
-      var message = [funcName[0], '[', this._name, ']'].join('');
-      var args = Array.prototype.slice.call(arguments);
-      var stack_traces = [];
-
-      // logger.trace -> console.log
-      funcName = funcName === 'trace' ? 'log' : funcName;
-
-      if (!console) {
-        return;
-      }
-
-      if (typeof args[0] === 'string') {
-        message += ': ' + args.shift();
-      }
-
-      for (var i = 0, len = args.length; i < len; ++i) {
-        if (args[i] && args[i].stack) {
-          stack_traces.push(args[i].stack);
-        }
-      }
-
-      if (console.firebug) {
-        args.unshift(message);
-        console[funcName].apply(self, args);
-      } else {
-        if (args.length <= 0) {
-          console[funcName] ? console[funcName](message) :
-            console.log(message);
-        } else if (args.length === 1) {
-          console[funcName] ? console[funcName](message, args[0]) :
-            console.log(message, args[0]);
-        } else {
-          console[funcName] ? console[funcName](message, args) :
-            console.log(message, args);
-        }
-      }
-
-      var len = stack_traces.length;
-
-      if (len > 0) {
-        console.log('Listing exception stack traces individually:');
-        for (var i = 0; i < len; ++i) {
-          console.log(stack_traces[i]); // why? because in Google Chrome,
-                                    // this will make clickable links
+if (typeof console !== 'undefined' && typeof console.log === 'function') {
+  Logger.prototype = console;
+} else { // for the dreaded IE, which doesn't allow console.log.apply
+  function getLogFunction(name) {
+    return function(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9) {
+      if (typeof console !== 'undefined') {
+        switch (arguments.length) {
+          case 0:
+            console[name]();
+            break;
+          case 1:
+            console[name](arg0);
+            break;
+          case 2:
+            console[name](arg0, arg1);
+            break;
+          case 3:
+            console[name](arg0, arg1, arg2);
+            break
+          case 4:
+            console[name](arg0, arg1, arg2, arg3);
+            break;
+          case 5:
+            console[name](arg0, arg1, arg2, arg3, arg4);
+            break;
+          case 6:
+            console[name](arg0, arg1, arg2, arg3, arg4, arg5);
+            break;
+          case 7:
+            console[name](arg0, arg1, arg2, arg3, arg4, arg5, arg6);
+            break;
+          case 7:
+            console[name](arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+            break;
+          case 8:
+            console[name](arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
+            break;
+          case 9:
+            console[name](arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9);
+            break;
+          case 10:
+            console[name](arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10);
+            break;
+          default:
+            break;
         }
       }
     };
-  })(index, logMethods[index]);
+  }
+
+  Logger.prototype = {
+    error: getLogFunction('error'),
+    warn: getLogFunction('warn'),
+    info: getLogFunction('info'),
+    debug: getLogFunction('debug'),
+    trace: getLogFunction('log')
+  };
 }
 
 module.exports = Logger;
