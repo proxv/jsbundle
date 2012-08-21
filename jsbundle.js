@@ -1,13 +1,13 @@
 var parseConfig = require('./lib/parse-config');
 var Bundle = require('./lib/bundle');
 
-function compilePackage(configOrPackageDir, env, bundleUrl) {
+function compileBundle(configOrBundleDir, env, bundleUrl) {
   var config;
-  if (typeof configOrPackageDir === 'string') {
-    var packageDir = configOrPackageDir;
-    config = parseConfig(packageDir, env, bundleUrl);
+  if (typeof configOrBundleDir === 'string') {
+    var bundleDir = configOrBundleDir;
+    config = parseConfig(bundleDir, env, bundleUrl);
   } else {
-    config = configOrPackageDir;
+    config = configOrBundleDir;
   }
 
   var bundle = new Bundle(config);
@@ -22,5 +22,5 @@ function compilePackage(configOrPackageDir, env, bundleUrl) {
 exports.createDevCdn = require('./lib/dev-cdn');
 exports.parseConfig = parseConfig;
 exports.Bundle = Bundle;
-exports.compilePackage = compilePackage;
+exports.compileBundle = exports.compilePackage = compileBundle;
 

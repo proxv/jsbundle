@@ -10,7 +10,7 @@
   },
   "main": "jsbundle.js",
   "scripts": {
-    "test": "find test -name \"test*.js\" | xargs node_modules/vows/bin/vows"
+    "test": "find test -name \"test*.js\" | xargs node_modules/vows/bin/vows && JSBUNDLE_ENV=production bin/jsbundle . > test/fixtures/browser-test.js && open test/fixtures/browser-test.html"
   },
   "bin": {
     "devcdn": "./bin/devcdn",

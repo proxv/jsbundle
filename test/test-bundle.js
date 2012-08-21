@@ -3,7 +3,8 @@ var assert = require('assert');
 var path = require('path');
 var vm = require('vm');
 var jsbundle = require('../jsbundle');
-var PACKAGE_DIR = __dirname + '/fixtures/';
+var _ = require('underscore');
+var BUNDLE_DIR = __dirname + '/fixtures/';
 
 function execute(code, env) {
   env.global = env;
@@ -15,9 +16,9 @@ function execute(code, env) {
   }
 }
 
-vows.describe('package').addBatch({
+vows.describe('bundle').addBatch({
   "no mangled names": {
-    topic: jsbundle.compilePackage(PACKAGE_DIR),
+    topic: jsbundle.compileBundle(BUNDLE_DIR),
 
     "find all modules": function(bundled) {
       assert.equal(typeof bundled, 'string');
@@ -35,7 +36,9 @@ vows.describe('package').addBatch({
       };
       assert.equal(typeof bundled, 'string');
       execute(bundled, env);
-      assert.equal(env.output, 'output from module "def"');
+      _.each(env.output, function(outputLine) {
+        assert.match(outputLine, /^assertion succeeded:|^all \d+ tests passed/);
+      });
     }
   },
 
@@ -54,7 +57,9 @@ vows.describe('package').addBatch({
       };
       assert.equal(typeof bundled, 'string');
       execute(bundled, env);
-      assert.equal(env.output, 'output from module "def"');
+      _.each(env.output, function(outputLine) {
+        assert.match(outputLine, /^assertion succeeded:|^all \d+ tests passed/);
+      });
     }
   }
 }).export(module);

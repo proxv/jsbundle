@@ -35,8 +35,11 @@
 
     "loggerLevel": "warn",    # Filter out all but "error" and "warn" logs in production mode (used by the logger filter).
 
+    "loggerUrl":              # Report logs to an external URL (used by the logger filter).
+      "logging.png?m=",
+
     "bundleUrl":              # Exposed in your code as module.bundleUrl.
-      "http://s3.amazonaws.com/example/bundle.js"
+      "//s3.amazonaws.com/example/bundle.js"
 
   }
 
