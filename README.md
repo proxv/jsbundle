@@ -41,6 +41,7 @@ which should give you the exact same output as:
 
     node .
 
+
 ## More Detailed Usage Instructions
 
 ### jsbundle
@@ -69,7 +70,27 @@ in the sense that when the resulting script is executed in the browser, the pack
 
 For production deployment, you'll probably want to pipe the resulting output to the JavaScript minifier of your choice.
 
-### Loading external scripts (e.g. CDN hosted jQuery) with module.externalDependency
+### Configuration and JSBUNDLE\_ENV
+
+#### Example Config
+
+    {
+      "defaults": {
+        "mangleNames": false,
+      },
+
+      "production": {
+        "mangleNames" true
+      }
+    }
+
+*jsbundle* uses the "defaults" configuration as a base, and then, depending on the value of the JSBUNDLE\_ENV environment variable, overrides or adds more values.
+
+In the example above, if the value of JSBUNDLE\_ENV is "production", module names will be mangled.
+
+**See the included [jsbundle.json](https://raw.github.com/proxv/jsbundle/master/jsbundle.json) for an annotated example of all configuration options.**
+
+### Loading External Scripts (Like CDN Hosted jQuery) with module.externalDependency
 
 In any of your modules that are browser-only, you can easily add external dependencies that are guaranteed to be loaded before your code executes by using the <code>module.externalDependency</code> function.
 
@@ -96,8 +117,7 @@ myscript.js:
 
 If you execute a bundle with external dependencies without a DOM (e.g. in node.js), the dependencies will be silently ignored.
 
-
-### Mocking / stubbing modules
+### Mocking / Stubbing Modules
 
 In order to make unit testing your modules easier, jsbundle provides a mocking API:
 
@@ -122,11 +142,13 @@ The Dev CDN finds all package.json files below the directory from which it is ex
 
 You can specify the JSBUNDLE\_ENV (see below) either via an environment variable or by passing a value to the --env flag. The JSBUNDLE\_ENV will be used to evaluate and jsbundle.json files encountered in the served packages.
 
+
 ## Tests
 
 Test coverage is currently mediocre. You can run tests with:
 
     npm test
+
 
 ## Caveats
 
@@ -136,26 +158,6 @@ Test coverage is currently mediocre. You can run tests with:
 
 * The special variable *\_\_dirname* doesn't really make sense in the context of browser modules, so while the variable exists, its value is *undefined*.
 
-
-## Configuration and JSBUNDLE\_ENV
-
-### Example Config
-
-    {
-      "defaults": {
-        "mangleNames": false,
-      },
-
-      "production": {
-        "mangleNames" true
-      }
-    }
-
-*jsbundle* uses the "defaults" configuration as a base, and then, depending on the value of the JSBUNDLE\_ENV environment variable, overrides or adds more values.
-
-In the example above, if the value of JSBUNDLE\_ENV is "production", module names will be mangled.
-
-**See the included [jsbundle.json](https://raw.github.com/proxv/jsbundle/master/jsbundle.json) for an annotated example of all configuration options.**
 
 ## Thanks To
 
