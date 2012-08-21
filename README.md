@@ -97,6 +97,19 @@ myscript.js:
 If you execute a bundle with external dependencies without a DOM (e.g. in node.js), the dependencies will be silently ignored.
 
 
+### Mocking / stubbing modules
+
+In order to make unit testing your modules easier, jsbundle provides a mocking API:
+
+    module.mock('some-module-name.js', { my: 'mock module.exports object' });
+    var someModule = require('../path/to/some-module-name.js');
+    // test code here
+    module.unmock('some-module-name.js');
+
+<code>module.mock(moduleIdSubstring, mockExportsObject)</code> takes a string as its first parameter and an arbitrary object as its second parameter. After calling <code>module.mock</code>, all <code>require</code> thereafter will return the mockExportsObject if the required module's ID matches the moduleIdSubstring. Note that if you specified mangleNames: true, the module ID is a somewhat unpredictable mangled numeric name, so it is not recommended to use module.mock with mangleNames turned on.
+
+<code>module.unmock(moduleIdSubstring)</code> disables a previous call to <code>module.mock</code>. The moduleIdSubstring must match the one from the corresponding <code>module.mock</code> call exactly.
+
 ### devcdn
 
     [JSBUNDLE_ENV=<env>] devcdn [port]

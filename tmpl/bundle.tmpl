@@ -3,16 +3,51 @@
   var _$_modules = {};
   var _$_mainModuleId = @mainModuleId;
   var _$_moduleMap = @moduleMap;
+  var _$_mockedModules;
+  var _$_hasOwnProp = Object.prototype.hasOwnProperty;
+
+  function _$_mock(idSubstring, mockExports) {
+    if (!_$_mockedModules) {
+      _$_mockedModules = {};
+    }
+    _$_mockedModules[idSubstring] = mockExports;
+  }
+
+  function _$_unmock(idSubstring) {
+    if (_$_mockedModules[idSubstring]) {
+      delete _$_mockedModules[idSubstring];
+    } else {
+      throw new Error('Substring "' + idSubstring + '" not registered for module mocking, so cannot unmock.');
+    }
+  }
+
+  function _$_getModule(id) {
+    id = String(id);
+    if (_$_mockedModules) {
+      for (var idSubstring in _$_mockedModules) {
+        if (_$_hasOwnProp.call(_$_mockedModules, idSubstring)) {
+          if (id.indexOf(idSubstring) >= 0) {
+            return {
+              exports: _$_mockedModules[idSubstring]
+            };
+          }
+        }
+      }
+    }
+    return _$_modules[id];
+  }
 
   function _$_require(id) {
     var moduleFn = _$_moduleFns[id];
     if (moduleFn) {
-      var mod = _$_modules[id];
+      var mod = _$_getModule(id);
       if (!mod) {
         mod = _$_modules[id] = {
           id: id,
           exports: {},
-          bundleUrl: JSBUNDLE_URL
+          bundleUrl: JSBUNDLE_URL,
+          mock: _$_mock,
+          unmock: _$_unmock
         };
         if (id === _$_mainModuleId) {
           _$_require.main = mod;
@@ -21,7 +56,7 @@
       }
       return mod.exports;
     } else {
-      throw new Error("Cannot find module '" + id + "'");
+      throw new Error("Cannot find module '" + id + "'.");
     }
   }
 
@@ -38,7 +73,6 @@
   }
 
   (function() {
-    var hasOwnProp = Object.prototype.hasOwnProperty;
 
     function registerScriptLoad(url, index) {
       _$_scriptsToLoad[index] = null;

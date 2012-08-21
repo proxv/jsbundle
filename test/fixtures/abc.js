@@ -10,6 +10,17 @@ var def = require(
 .js'
 )();
 
+module.mock('xyz.js', { mock: true });
+module.mock('3', { mock: true });
+if (!require('./xyz.js').mock) {
+  throw new Error('mocking failed');
+}
+module.unmock('xyz.js');
+module.unmock('3');
+if (require('./xyz.js').mock) {
+  throw new Error('unmocking failed');
+}
+
 if (typeof alert !== 'undefined') {
   alert(def);
 } else {

@@ -16,7 +16,7 @@ vows.describe('test Module').addBatch({
     "dependencies / extraDependencies": function(mod) {
       var deps = mod.dependencies().sort();
       var extraDeps = mod.extraDependencies().sort();
-      assert.equal(deps.length, 3);
+      assert.equal(deps.length, 4);
       assert.equal(extraDeps.length, 1);
       assert.match(deps[0], /def\.js$/);
       assert.match(extraDeps[0], /underscore.js$/);
