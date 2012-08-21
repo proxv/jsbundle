@@ -106,9 +106,9 @@ In order to make unit testing your modules easier, jsbundle provides a mocking A
     // test code here
     module.unmock('some-module-name.js');
 
-<code>module.mock(moduleIdSubstring, mockExportsObject)</code> takes a string as its first parameter and an arbitrary object as its second parameter. After calling <code>module.mock</code>, all <code>require</code> thereafter will return the mockExportsObject if the required module's ID matches the moduleIdSubstring. Note that if you specified mangleNames: true, the module ID is a somewhat unpredictable mangled numeric name, so it is not recommended to use module.mock with mangleNames turned on.
+* <code>module.mock(moduleIdSubstring, mockExportsObject)</code> takes a string as its first parameter and an arbitrary object as its second parameter. After calling <code>module.mock</code>, all <code>require</code> calls thereafter will return the *mockExportsObject* if the required module's ID matches the *moduleIdSubstring*. Note that if you specified <code>mangleNames: true</code>, the module ID is a somewhat unpredictable mangled numeric name, so it is not recommended to use <code>module.mock</code> with *mangleNames* turned on.
 
-<code>module.unmock(moduleIdSubstring)</code> disables a previous call to <code>module.mock</code>. The moduleIdSubstring must match the one from the corresponding <code>module.mock</code> call exactly.
+* <code>module.unmock(moduleIdSubstring)</code> disables a previous call to <code>module.mock</code>. The *moduleIdSubstring* must match the one from the corresponding <code>module.mock</code> call exactly.
 
 ### devcdn
 
