@@ -4,11 +4,12 @@ var _ = require('underscore');
 
 var LOG_LEVELS = {
   'off':   0,
-  'error': 1,
-  'warn':  2,
-  'info':  3,
-  'debug': 4,
-  'trace': 5
+  'data':  1,
+  'error': 2,
+  'warn':  3,
+  'info':  4,
+  'debug': 5,
+  'trace': 6
 };
 
 function init(options) {
@@ -48,7 +49,7 @@ function init(options) {
                     src.substring(endPos);
               replacementOffset += '/*  */'.length;
             } else {
-              var stringToInject = '"' + logLevel.charAt(0) + '[" + __shortfilename + "]:"';
+              var stringToInject = '"' + logLevel + '[" + __shortfilename + "]: "';
               if (this[2].length > 0) {
                 stringToInject += ', ';
               }
@@ -72,7 +73,7 @@ function init(options) {
         var loggerType = JSON.stringify(options.loggerUrl ? 'url' : 'console');
         var loggerArg = JSON.stringify(options.loggerUrl || '');
         return 'var __shortfilename = String(__filename).split("/");\n' +
-               '__shortfilename = __shortfilename.slice(__shortfilename.length - 3).join("/");\n' +
+               '__shortfilename = __shortfilename.slice(__shortfilename.length - 2).join("/");\n' +
                'var logger = new (require(' + JSON.stringify(loggerFile) + ')(' + loggerType + '))(' + loggerArg + ');\n' +
                src;
       }

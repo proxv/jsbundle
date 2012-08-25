@@ -1,37 +1,28 @@
-var isInternetExplorer = (navigator.appName === 'Microsoft Internet Explorer');
+var MAX_DATA_LENGTH = 975;
+
+function _validateDataCall(args) {
+  if (args.length !== 2) {
+    throw new Error('logger.data takes exactly 2 args');
+  } else if (typeof args[0] !== 'string' || args[0].length === 0) {
+    throw new Error('first param to logger.data must be a non-zero-length namespace string');
+  }
+}
 
 function UrlLogger(url) {
-  this._url = url || '';
-  this.error = this.log;
-  this.warn = this.log;
-  this.info = this.log;
-  this.debug = this.log;
-  this.trace = this.log;
-  this.log = void 0;
+  if (!url) {
+    throw new Error('url required');
+  }
+
+  this._url = url;
+  this.error = this._log;
+  this.warn = this._log;
+  this.info = this._log;
+  this.debug = this._log;
+  this.trace = this._log;
 }
 
 UrlLogger.prototype = {
-  log: function() {
-    var args = Array.prototype.slice.call(arguments);
-    for (var i = 0, len = args.length; i < len; i++) {
-      var arg = args[i];
-      if (arg instanceof Error) {
-        if (arg.stack) {
-          if (isInternetExplorer) { // avoid hitting URL length limits in IE
-            args[i] = arg.stack.split(/\s*\n\s*/)[1];
-          } else {
-            args[i] = arg.stack;
-          }
-        } else {
-          args[i] = arg.message;
-        }
-      }
-    }
-
-    this._sendData(args);
-  },
-
-  _sendData: function(data) {
+  _send: function(log, type) {
     if (typeof document !== 'undefined' &&
         document.createElement &&
           document.documentElement) { // don't try to send data if we don't have a DOM
@@ -42,10 +33,65 @@ UrlLogger.prototype = {
         body.removeChild(img);
         img = null;
       };
-      img.src = this._url + encodeURIComponent(JSON.stringify(data));
+      img.src = this._url + (this._url.indexOf('?') >= 0 ? '&' : '?') +
+                'log=' + encodeURIComponent(log) +
+                '&type=' + encodeURIComponent(type);
 
       body.appendChild(img);
     }
+  },
+
+  _log: function() {
+    var args = Array.prototype.slice.call(arguments);
+    var name = JSON.stringify(args.shift().replace(/:\s*$/, ''));
+    for (var i = 0, len = args.length; i < len; i++) {
+      var arg = args[i];
+      if (arg instanceof Error) {
+        if (arg.stack) {
+          args[i] = arg.stack;
+        } else {
+          args[i] = arg.message;
+        }
+      }
+    }
+
+    var encoded = JSON.stringify(args);
+    while (encoded.length > MAX_DATA_LENGTH) {
+      var longestLength = 0;
+      var longestIndex = -1;
+      for (var i = 0, len = args.length; i < len; i++) {
+        var encodedArg = JSON.stringify(args[i]);
+        if (encodedArg.length > longestLength) {
+          longestLength = encodedArg.length;
+          longestIndex = i;
+        }
+      }
+
+      // try to trim down longest value to make it fit
+      var longestArg = args[longestIndex];
+      if (typeof longestArg === 'string') {
+        longestArg = longestArg.split('\n');
+        longestArg = longestArg.slice(0, Math.round(longestArg.length / 2)).join('\n') + '\n(truncated)';
+      } else if (typeof longestArg.slice === 'function') {
+        longestArg = longestArg.slice(0, Math.round(longestArg.length / 2));
+        longestArg.push('(truncated)');
+      }
+
+      if (longestArg.length < args[longestIndex].length) {
+        args[longestIndex] = longestArg;
+      } else {
+        args[longestIndex] = '(truncated)';
+      }
+
+      encoded = JSON.stringify(args);
+    }
+
+    this._send(encoded, name);
+  },
+
+  data: function(namespace, data) {
+    _validateDataCall(Array.prototype.slice.call(arguments, 1));
+    this._log.apply(this, arguments);
   }
 }
 
@@ -116,6 +162,11 @@ try {
     debug: getConsoleLogFunction('log'),
     trace: getConsoleLogFunction('log')
   };
+}
+
+ConsoleLogger.prototype.data = function() {
+  _validateDataCall(Array.prototype.slice.call(arguments, 1));
+  this.debug.apply(this, arguments);
 }
 
 function getLogger(type) {
