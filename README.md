@@ -130,6 +130,21 @@ In order to make unit testing your modules easier, jsbundle provides a mocking A
 
 * <code>module.unmock(moduleIdSubstring)</code> disables a previous call to <code>module.mock</code>. The *moduleIdSubstring* must match the one from the corresponding <code>module.mock</code> call exactly.
 
+For integration testing, you'll want to define mocks before loading the bundle by using the global variable <code>jsbundleMocks</code>:
+
+    <script>
+      window.jsbundleMocks = {
+        'some-module-name.js', { my: 'mock module.exports object' }
+      };
+    </script>
+    <script src="/path/to/my/bundle.js"></script>
+
+You can still <code>module.unmock</code> later on in your test code:
+
+    module.unmock('some-module-name.js');
+
+Again, make sure the strings match exactly.
+
 ### devcdn
 
     [JSBUNDLE_ENV=<env>] devcdn [port]
