@@ -3,7 +3,7 @@
   var _$_modules = {};
   var _$_mainModuleId = @mainModuleId;
   var _$_moduleMap = @moduleMap;
-  var _$_mockedModules = self.jsbundleMocks;
+  var _$_mockedModules = (typeof self !== 'undefined' ? self.jsbundleMocks : global.jsbundleMocks);
   var _$_hasOwnProp = Object.prototype.hasOwnProperty;
 
   function _$_mock(idSubstring, mockExports) {
