@@ -134,7 +134,7 @@ For integration testing, you'll want to define mocks before loading the bundle b
 
     <script>
       window.jsbundleMocks = {
-        'some-module-name.js', { my: 'mock module.exports object' }
+        'some-module-name.js': { my: 'mock module.exports object' }
       };
     </script>
     <script src="/path/to/my/bundle.js"></script>
