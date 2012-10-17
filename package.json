@@ -3,7 +3,7 @@
   "name": "jsbundle",
   "description": "Simple, clean, and automatic bundling of your Node modules and packages for use in the browser.",
   "keywords": "browser require bundle module package static-analysis",
-  "version": "0.16.2",
+  "version": "0.16.3",
   "repository": {
     "type": "git",
     "url": "git://github.com/proxv/jsbundle.git"
@@ -23,7 +23,6 @@
     "optimist": "0.3.x",
     "connect": "2.x.x",
     "awssum": "0.5.1",
-    "gzip": "0.1.0",
     "q": "0.8.5"
   },
   "devDependencies": {
