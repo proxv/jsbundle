@@ -33,7 +33,10 @@ UrlLogger.prototype = {
         body.removeChild(img);
         img = null;
       };
+      var loc = document.location;
+      var currentUrl = loc.href.substr(loc.protocol.length + '//'.length + loc.hostname.length);
       img.src = this._url + (this._url.indexOf('?') >= 0 ? '&' : '?') +
+                'url=' + encodeURIComponent(currentUrl) +
                 'log=' + encodeURIComponent(log) +
                 '&type=' + encodeURIComponent(type);
 
