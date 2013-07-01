@@ -98,13 +98,6 @@ UrlLogger.prototype = {
   }
 }
 
-function ConsoleLogger() {
-  if (this.log) {
-    this.trace = this.log;
-    this.log = void 0;
-  }
-}
-
 // ugly hack because IE doesn't support console.log.apply
 function getConsoleLogFunction(name) {
   return function(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9) {
@@ -153,31 +146,37 @@ function getConsoleLogFunction(name) {
   };
 }
 
-
-try {
-  ConsoleLogger.prototype = console;
-  (new ConsoleLogger).groupEnd(); // feature detection for ability to use the console object as a prototype
-} catch (e) {
-  ConsoleLogger.prototype = {
-    error: getConsoleLogFunction('error'),
-    warn:  getConsoleLogFunction('warn'),
-    info:  getConsoleLogFunction('info'),
-    debug: getConsoleLogFunction('log'),
-    trace: getConsoleLogFunction('log')
-  };
+function ConsoleLogger() {
 }
 
-ConsoleLogger.prototype.data = function() {
-  _validateDataCall(Array.prototype.slice.call(arguments, 1));
-  this.debug.apply(this, arguments);
+ConsoleLogger.prototype = {
+  error: getConsoleLogFunction('error'),
+  warn:  getConsoleLogFunction('warn'),
+  info:  getConsoleLogFunction('info'),
+  debug: getConsoleLogFunction('log'),
+  trace: getConsoleLogFunction('log'),
+  data: function() {
+    _validateDataCall(Array.prototype.slice.call(arguments, 1));
+    this.debug.apply(this, arguments);
+  }
+};
+
+function getConsoleLogger() {
+  try {
+    console.groupEnd.apply(console, []);
+    console.data = console.data || ConsoleLogger.prototype.data;
+    return console;
+  } catch (e) {
+    return new ConsoleLogger;
+  }
 }
 
-function getLogger(type) {
+function getLogger(type, url) {
   switch (type && type.toLowerCase()) {
     case 'console':
-      return ConsoleLogger;
+      return getConsoleLogger();
     case 'url':
-      return UrlLogger;
+      return new UrlLogger(url);
     default:
       throw new Error('unknown logger type: ' + type);
   }

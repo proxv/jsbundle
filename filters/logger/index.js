@@ -74,7 +74,7 @@ function init(options) {
         var loggerArg = JSON.stringify(options.loggerUrl || '');
         return 'var __shortfilename = String(__filename).split("/");\n' +
                '__shortfilename = __shortfilename.slice(__shortfilename.length - 2).join("/");\n' +
-               'var logger = new (require(' + JSON.stringify(loggerFile) + ')(' + loggerType + '))(' + loggerArg + ');\n' +
+               'var logger =  require(' + JSON.stringify(loggerFile) + ')(' + loggerType + ', ' + loggerArg + ');\n' +
                src;
       }
     },
