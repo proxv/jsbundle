@@ -96,7 +96,7 @@ UrlLogger.prototype = {
     _validateDataCall(Array.prototype.slice.call(arguments, 1));
     this._log.apply(this, arguments);
   }
-}
+};
 
 // ugly hack because IE doesn't support console.log.apply
 function getConsoleLogFunction(name) {
@@ -171,12 +171,18 @@ function getConsoleLogger() {
   }
 }
 
+function RollbarLogger() {
+}
+RollbarLogger.prototype = (typeof Rollbar === 'object' ? Rollbar : getConsoleLogger());
+
 function getLogger(type, url) {
   switch (type && type.toLowerCase()) {
     case 'console':
       return getConsoleLogger();
     case 'url':
       return new UrlLogger(url);
+    case 'rollbar':
+      return new RollbarLogger();
     default:
       throw new Error('unknown logger type: ' + type);
   }
