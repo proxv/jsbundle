@@ -8,8 +8,7 @@ var LOG_LEVELS = {
   'error': 2,
   'warn':  3,
   'info':  4,
-  'debug': 5,
-  'trace': 6
+  'debug': 5
 };
 
 function init(options) {
@@ -82,7 +81,7 @@ function init(options) {
     requires: logLevel === 'off' ? [] : [ loggerFile ], // must be absolute paths
 
     lineDelta: logLevel === 'off' ? 0 : 3
-  }
+  };
 }
 
 exports.init = init;

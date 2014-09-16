@@ -18,7 +18,6 @@ function UrlLogger(url) {
   this.warn = this._log;
   this.info = this._log;
   this.debug = this._log;
-  this.trace = this._log;
 }
 
 UrlLogger.prototype = {
@@ -154,7 +153,6 @@ ConsoleLogger.prototype = {
   warn:  getConsoleLogFunction('warn'),
   info:  getConsoleLogFunction('info'),
   debug: getConsoleLogFunction('log'),
-  trace: getConsoleLogFunction('log'),
   data: function() {
     _validateDataCall(Array.prototype.slice.call(arguments, 1));
     this.debug.apply(this, arguments);
