@@ -28,6 +28,7 @@ UrlLogger.prototype = {
       var body = document.body || document.documentElement;
 
       var img = document.createElement('img');
+      img.setAttribute('style', 'width:0; height:0;');
       img.onload = img.onerror = function() {
         body.removeChild(img);
         img = null;
@@ -170,6 +171,7 @@ function getConsoleLogger() {
 }
 
 function RollbarLogger() {
+  this.warn = this.warning;
 }
 RollbarLogger.prototype = (typeof Rollbar === 'object' ? Rollbar : getConsoleLogger());
 
