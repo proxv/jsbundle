@@ -16,9 +16,12 @@ function compileBundle(configOrBundleDir, env, bundleUrl) {
   var config;
   if (typeof configOrBundleDir === 'string') {
     var bundleDir = configOrBundleDir;
-    config = parseConfig(bundleDir, env, bundleUrl);
+    config = parseConfig(bundleDir, env);
   } else {
     config = configOrBundleDir;
+  }
+  if (bundleUrl) {
+    config.bundleUrl = bundleUrl;
   }
 
   var bundle = new Bundle(config);
