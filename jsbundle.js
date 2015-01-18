@@ -2,9 +2,11 @@ var parseConfig = require('./lib/parse-config');
 var Bundle = require('./lib/bundle');
 var uglifyjs = require('uglify-js');
 
-function _uglify(code) {
+function _uglify(code, consolidate) {
   var ast = uglifyjs.parser.parse(code);
-  ast = uglifyjs.consolidator.ast_consolidate(ast);
+  if (consolidate) {
+    ast = uglifyjs.consolidator.ast_consolidate(ast);
+  }
   ast = uglifyjs.uglify.ast_mangle(ast);
   ast = uglifyjs.uglify.ast_squeeze(ast);
   ast = uglifyjs.uglify.ast_squeeze_more(ast);
@@ -29,7 +31,7 @@ function compileBundle(configOrBundleDir, env, bundleUrl) {
   if (bundle.error) {
     throw bundle.error;
   } else if (config.minify) {
-    return _uglify(compiled);
+    return _uglify(compiled, config.consolidate);
   } else {
     return compiled;
   }

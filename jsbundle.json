@@ -33,6 +33,10 @@
 
     "mangleNames": true,      # Use numeric ids instead of absolute file paths for the module.ids.
 
+    "minify": true,           # Minify code using uglifyjs
+   
+    "consolidate": true,      # Consolidate static names before passing to minifier (has no effect if minify is not true)
+
     "loggerLevel": "warn",    # Filter out all but "error" and "warn" logs in production mode (used by the logger filter).
 
     "loggerUrl":              # Report logs to an external URL (used by the logger filter).
