@@ -33,6 +33,27 @@ vows.describe('test Module').addBatch({
       mod.setId(123);
       assert.match(mod.compile(), /moduleFns\[123\]/);
     }
+  },
+
+  "excludeDirsFromExtraRequires": {
+    topic: new Module(__dirname + '/fixtures/abc.js', {
+      extraRequires: {
+        '_': 'underscore'
+      },
+      excludeDirsFromExtraRequires: [
+        __dirname + '/blah/',
+        __dirname + '/fixtures/'
+      ],
+      beforeModuleBody: '',
+      afterModuleBody: ''
+    }),
+
+    "no extra requires": function(mod) {
+      mod.updateRequires();
+      var src = mod._wrappedSrc;
+      assert.ok(!/underscore.js"\s*\)/.test(src));
+      assert.match(src, /def.js"\s*\)/);
+    }
   }
 }).export(module);
 

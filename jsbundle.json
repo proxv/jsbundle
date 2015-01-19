@@ -18,6 +18,10 @@
                               # Extra requires are resolved relative to this config file. That is, as if this config file
     },                        # contained a require('<value>') statement.
 
+    "excludeDirsFromExtraRequires": [
+      "/some/path"            don't add the extraRequires above to files in these dirs
+    ],
+
     "filters": [              # If a filter path begins with a '.', it is resolved relative to this config file.
       "logger"                # Otherwise, it is resolved relative to the jsbundle filters/ subdirectory.
     ],
