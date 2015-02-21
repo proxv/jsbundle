@@ -9,17 +9,15 @@ var jsbundle = require('../jsbundle');
 if (argv.help) {
   util.puts('usage:\n\
 \n\
-\t[JSBUNDLE_ENV=<env>] devcdn [port]\n\
+\t[JSBUNDLE_ENV=<env>] devcdn port [dirs]\n\
 \n\
-\tStart a "Dev CDN" serving all node packages below the current working directory as bundles.\n\
-\n\
-\tDefaults to port 8081.\n\
+\tStart a "Dev CDN" serving all node packages below the specified dirs or the current working directory as bundles.\n\
 \n\
 \tsee: https://github.com/proxv/jsbundle/blob/master/README.md for more details.');
 } else if (argv.version) {
   util.puts(JSON.parse(fs.readFileSync(__dirname + '/../package.json', 'utf-8')).version);
 } else {
-  var devCdn = jsbundle.createDevCdn(process.env.JSBUNDLE_ENV);
+  var devCdn = jsbundle.createDevCdn(process.env.JSBUNDLE_ENV, process.argv.length > 3 ? process.argv.slice(3) : process.cwd());
   var port = argv._[0] || 8081;
   connect().use(devCdn).listen(port);
 }
