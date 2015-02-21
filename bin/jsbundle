@@ -32,6 +32,7 @@ if (argv.help || process.argv.length < 2) {
     util.puts(jsbundle.compilePackage(argv._[0], process.env.JSBUNDLE_ENV, argv['bundle-url']));
   } catch (e) {
     console.error(e);
+    process.exit(1);
   }
 }
 
